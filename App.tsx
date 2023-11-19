@@ -5,9 +5,6 @@ import Login from './Pages/Login'
 import Profile from './Pages/Profile'
 import MessageEchange from "./Pages/MessageEchange";
 
-
-
-
 const Stack = createNativeStackNavigator();
 
 export default function Connex() {
