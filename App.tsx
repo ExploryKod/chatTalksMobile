@@ -1,17 +1,14 @@
-import Connexion from "./Auth/Connexion"
+import React from 'react';
+import Connexion from './Auth/Connexion';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Login from './Pages/Login'
-import Profile from './Pages/Profile'
-import MessageEchange from "./Pages/MessageEchange";
-
-
-
+import Login from './Pages/Login';
+import Profile from './Pages/Profile';
+import MessageEchange from './Pages/MessageExchange';
 
 const Stack = createNativeStackNavigator();
 
 export default function Connex() {
-
   return (
     <NavigationContainer>
       <Stack.Navigator>
