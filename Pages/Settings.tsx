@@ -1,9 +1,10 @@
-import { StyleSheet, TextInput, View, Text } from 'react-native';
+import {StyleSheet, TextInput, View, Text, Button} from 'react-native';
 import Main from '../Component/Main';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import React from "react";
 
 export default function Settings() {
   return (

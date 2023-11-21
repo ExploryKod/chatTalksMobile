@@ -7,6 +7,8 @@ import {
 import { useState } from "react";
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import {ProfileScreenProp} from './Profile'
+
 import {useLoggedStore} from "../StateManager/userStore";
 import React from "react";
 

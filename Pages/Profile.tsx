@@ -13,6 +13,8 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import ClassRoom from "./ClassRoom";
 import ListDiscussion from "./Discussion";
 import Settings from "./Settings";
+import {useLoggedStore} from "../StateManager/userStore";
+import Logout from "./Logout";
 
 //const {height, width} = Dimensions.get('window');
 
@@ -20,38 +22,51 @@ export default function Profile() {
 
     const Tab = createMaterialTopTabNavigator();
 
+
     return (
 
         <Tab.Navigator>
             <Tab.Screen
                 options={{
-                    tabBarIcon :(()=><FontAwesomeIcone name="comment" style={style.iconeCss}/>),
-                    tabBarIconStyle : {
+                    tabBarIcon: (() => <FontAwesomeIcone name="comment" style={style.iconeCss}/>),
+                    tabBarIconStyle: {
                         width: wp(10),
                         height: hp(4)
                     }
                 }}
-                name="ListDiscussion" component={ListDiscussion} />
+                name="ListDiscussion" component={ListDiscussion}/>
 
             <Tab.Screen
                 options={{
-                    tabBarIcon :(()=><MaterialIcon name="group" style={style.iconeCss}/>),
-                    tabBarIconStyle : {
+                    tabBarIcon: (() => <MaterialIcon name="group" style={style.iconeCss}/>),
+                    tabBarIconStyle: {
                         width: wp(10),
                         height: hp(4)
                     },
                 }}
-                name="ClassRoom" component={ClassRoom} />
+                name="ClassRoom" component={ClassRoom}/>
 
             <Tab.Screen
                 options={{
-                    tabBarIcon :(()=><MaterialIcon name="settings" style={style.iconeCss} />),
-                    tabBarIconStyle : {
+                    tabBarIcon: (() => <MaterialIcon name="settings" style={style.iconeCss}/>),
+                    tabBarIconStyle: {
                         width: wp(10),
                         height: hp(4)
                     }
                 }}
-                name="Settings" component={Settings} />
+                name="Settings" component={Settings}/>
+
+            <Tab.Screen
+                options={{
+                    tabBarIcon: (() => <MaterialIcon name="logout" style={style.iconeCss}/>),
+                    tabBarIconStyle: {
+                        width: wp(10),
+                        height: hp(4)
+                    }
+                }}
+                name="Logout" component={Logout}/>
+
+
         </Tab.Navigator>
     );
 }
