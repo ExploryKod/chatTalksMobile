@@ -7,7 +7,6 @@ import {
 import { useState } from "react";
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import {ProfileScreenProp} from './Profile'
 
 import {useLoggedStore} from "../StateManager/userStore";
 import React from "react";
@@ -16,6 +15,7 @@ import React from "react";
 
 export type RootFromProfile = {
   Profile: undefined;
+  Inscription: undefined;
 };
 
 export type LoginScreenProp = NativeStackNavigationProp<RootFromProfile>;
@@ -93,6 +93,10 @@ export default function Login() {
     }
   };
 
+  const handleRegister = () => {
+    navigation.navigate('Inscription');
+  };
+
   return (
     <Main styles={style.disposition}>
       <View style={style.composantInput}>
@@ -122,7 +126,7 @@ export default function Login() {
           Login
         </Text>
         <View style={{ display: 'flex', flexDirection: 'row', gap: wp(40) }}>
-          <Text style={{ color: '#A3298B', fontSize: hp(2) }}>
+          <Text style={{ color: '#A3298B', fontSize: hp(2) }} onPress={handleRegister}>
             Create Account
           </Text>
           <Text style={{ color: '#A3298B', fontSize: hp(2) }}>Need Help</Text>

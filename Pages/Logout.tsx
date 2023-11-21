@@ -1,4 +1,4 @@
-import {StyleSheet, TextInput, View, Text, Button} from 'react-native';
+import {StyleSheet, Button} from 'react-native';
 import Main from '../Component/Main';
 import {
     widthPercentageToDP as wp,
@@ -9,6 +9,7 @@ import {useLoggedStore} from "../StateManager/userStore";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import {useNavigation} from "@react-navigation/native";
 
+
 export type RootFromLogin = {
     Login: undefined;
 };
@@ -17,7 +18,6 @@ export type ProfileScreenProp = NativeStackNavigationProp<RootFromLogin>;
 
 
 export default function Logout() {
-
 
     const navigation = useNavigation<ProfileScreenProp>();
 

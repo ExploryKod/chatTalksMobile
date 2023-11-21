@@ -12,7 +12,7 @@ export default function Connex() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Create Account" component={Connexion} />
+        <Stack.Screen name="Inscription" component={Connexion} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="MessageEchange" component={MessageEchange} />

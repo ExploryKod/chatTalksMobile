@@ -1,30 +1,20 @@
 import React from "react";
 import { StyleSheet, View, Text, Button } from "react-native";
-import Discussion from "../Component/widgetDiscussion";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp,} from "react-native-responsive-screen";
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack'; // Importez le type NativeStackNavigationProp
-import { NavigationContainer } from '@react-navigation/native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import FontAwesomeIcone from 'react-native-vector-icons/FontAwesome';
-import MenuOption from "../Component/MenuOption";
-import {LoginScreenProp} from './Login'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { LogOut } from "lucide-react-native";
 import ClassRoom from "./ClassRoom";
 import ListDiscussion from "./Discussion";
 import Settings from "./Settings";
-import {useLoggedStore} from "../StateManager/userStore";
-import Logout from "./Logout";
-
-//const {height, width} = Dimensions.get('window');
+import Logout, {ProfileScreenProp} from "./Logout";
 
 export default function Profile() {
 
     const Tab = createMaterialTopTabNavigator();
 
-
     return (
-
         <Tab.Navigator>
             <Tab.Screen
                 options={{
@@ -58,16 +48,15 @@ export default function Profile() {
 
             <Tab.Screen
                 options={{
-                    tabBarIcon: (() => <MaterialIcon name="logout" style={style.iconeCss}/>),
+                    tabBarIcon: (() => <LogOut style={style.iconeCss}/>),
                     tabBarIconStyle: {
                         width: wp(10),
                         height: hp(4)
                     }
                 }}
                 name="Logout" component={Logout}/>
-
-
         </Tab.Navigator>
+
     );
 }
 

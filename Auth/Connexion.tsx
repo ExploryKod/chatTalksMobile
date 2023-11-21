@@ -2,21 +2,16 @@ import {
   StyleSheet,
   TextInput,
   View,
-  Text,
-  Dimensions,
-  TouchableOpacity,
+  Text
 } from 'react-native';
 import Main from "../Component/Main";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { useState } from "react";
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React, { useState } from "react";
+import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-
-//const {height, width} = Dimensions.get('window');
 
 type RootStackParamList = {
   Login: undefined;
@@ -25,12 +20,10 @@ type RootStackParamList = {
 type ConnexionScreenProp = NativeStackNavigationProp<RootStackParamList>;
 
 function Connexion() {
-  const data = {
-    user: 'amaury',
-    password: 'password',
-  };
+  const [errorAuthe, setErrorAuthe] = useState('');
   const [inputText, setInputText] = useState<{ [key: string]: string }>({});
   const navigation = useNavigation<ConnexionScreenProp>();
+  const serverHost: string = "https://go-chat-docker.onrender.com"
 
   const handleChange = (name: string, value: string) => {
     setInputText((prevState) => ({
@@ -39,15 +32,53 @@ function Connexion() {
     }));
   };
 
-  const handleSubmit = () => {
-    const username = inputText.Username;
-    const password1 = inputText.Password;
-    const password2 = inputText.ConfirmPassword;
+  const handleSubmit = async () => {
 
-    console.log('Username :', username);
-    console.log('Password1 :', password1);
-    console.log('Password2 :', password2);
+    if(inputText.Username === undefined || inputText.Password === undefined) {
+      setErrorAuthe('Veuillez remplir tous les champs');
+      return;
+    }
+
+    if(inputText.Username === '' || inputText.Password === '') {
+      setErrorAuthe('Veuillez remplir tous les champs');
+      return;
+    }
+
+    if(inputText.Password !== inputText.ConfirmPassword) {
+        setErrorAuthe('Les mots de passe ne correspondent pas');
+        return;
+    }
+
+    try {
+      const response = await fetch(`${serverHost}/auth/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+          username: inputText.Username,
+          password: inputText.ConfirmPassword,
+        }).toString()
+      });
+      console.log('response login ', response)
+      if (response.ok) {
+        console.log('réponse bien reçu');
+
+        const data = await response.json();
+        console.log('data ====>', data);
+        setErrorAuthe('' + data.message);
+        navigation.navigate('Login');
+
+      } else {
+        const errorData = await response.json();
+        setErrorAuthe('' + errorData.message);
+      }
+    } catch (error) {
+      console.error('log failed:', error);
+      setErrorAuthe('Il y a eu une erreur dans la requête');
+    }
   };
+
 
   const handleLogin = () => {
     navigation.navigate('Login');
@@ -82,6 +113,10 @@ function Connexion() {
           placeholder="Confirm Password"
           value={inputText.ConfirmPassword}
         />
+
+        {errorAuthe !== '' && (
+            <Text style={{ color: 'red', fontSize: hp(2.2) }}>{errorAuthe}</Text>
+        )}
 
         <Text style={style.buttonCreate} onPress={handleSubmit}>
           Create Account

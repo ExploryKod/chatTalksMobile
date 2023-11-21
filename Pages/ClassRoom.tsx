@@ -1,15 +1,24 @@
 import { StyleSheet, TextInput, View, Text } from "react-native";
 import Main from "../Component/Main";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { useState } from "react";
+import useGetData from "../Hook/useGetData";
+import { useLoggedStore } from "../StateManager/userStore";
+import {useEffect, useState} from "react";
 import Class from "./Class";
+
+export interface IRoom {
+    id: number;
+    name: string;
+    description: string;
+}
 
 export default function ClassRoom() {
 
     const [dataClassRoom, setDataClassRoom] = useState(["khali"])
-
     const [inputText, setInputText] = useState("");
-
+    const [roomList, setRoomList] = useState<IRoom[]>([]);
+    const serverHost: string = "https://go-chat-docker.onrender.com"
+    const { data, error } = useGetData(`${serverHost}/chat/rooms`);
     const handleChange = (name: string) => {
         setInputText(name)
     };
@@ -20,6 +29,15 @@ export default function ClassRoom() {
         setDataClassRoom(cpyDataClassRoom);
         console.log("Groupe ajouter");
     }
+
+    useEffect(() => {
+        if (data) {
+            setRoomList(data);
+        }
+        if(error) {
+            console.log("error fetching rooms", error);
+        }
+    }, [data]);
 
     return (
         <Main styles={style.disposition}>
@@ -38,6 +56,13 @@ export default function ClassRoom() {
                 {
                     dataClassRoom.map((groupName) =>
                         <Text style={{margin:10, fontSize:30}}>{groupName}</Text>
+                    )
+                }
+            </View>
+            <View>
+                {
+                    roomList.map((room) =>
+                        <Text style={{margin:10, fontSize:30}}>{room.name}</Text>
                     )
                 }
             </View>
