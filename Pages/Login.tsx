@@ -7,6 +7,8 @@ import {
 import { useState } from "react";
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import {useLoggedStore} from "../StateManager/userStore";
+import React from "react";
 
 //const {height, width} = Dimensions.get('window');
 
@@ -17,14 +19,19 @@ export type RootFromProfile = {
 export type LoginScreenProp = NativeStackNavigationProp<RootFromProfile>;
 
 export default function Login() {
-  const data = {
-    user: 'amaury',
-    password: 'password',
-  };
   const [inputText, setInputText] = useState<{ [key: string]: string }>({});
   const [errorAuthe, setErrorAuthe] = useState('');
+  const serverHost: string = "https://go-chat-docker.onrender.com"
+  const { setToken, setUsername, setAdminStatus } = useLoggedStore();
 
   const navigation = useNavigation<LoginScreenProp>();
+
+  // const handleChange = (name: string, value: string) => {
+  //   setInputText((prevState) => ({
+  //     ...prevState,
+  //     [name]: value,
+  //   }));
+  // };
 
   const handleChange = (name: string, value: string) => {
     setInputText((prevState) => ({
@@ -33,22 +40,55 @@ export default function Login() {
     }));
   };
 
-  const handleSubmit = () => {
-    const username = inputText.Username;
-    const password1 = inputText.Password;
 
-    if (username !== data.user || password1 !== data.password) {
-      setErrorAuthe('Username ou mot de passe incorrect');
-    } else {
-      setErrorAuthe('');
-      console.log('Usernamennn :', username);
-      console.log('Password1 :', password1);
-      handleConnect();
+  const handleSubmit = async () => {
+
+    if(inputText.Username === undefined || inputText.Password === undefined) {
+        setErrorAuthe('Veuillez remplir tous les champs');
+        return;
     }
-  };
 
-  const handleConnect = () => {
-    navigation.navigate('Profile');
+    if(inputText.Username === '' || inputText.Password === '') {
+        setErrorAuthe('Veuillez remplir tous les champs');
+        return;
+    }
+
+    try {
+      const response = await fetch(`${serverHost}/auth/logged`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+          username: inputText.Username,
+          password: inputText.Password
+        }).toString()
+      });
+      console.log('response login ', response)
+      if (response.ok) {
+        console.log('réponse bien reçu');
+
+        const data = await response.json();
+        if(data.token) {
+          console.log("data ====>", data)
+          console.log('token bien reçu ====>', data.token)
+          setToken(data.token);
+          setUsername(data.username);
+          setAdminStatus(data.admin);
+          navigation.navigate('Profile');
+        } else {
+          console.log("data ====> no token")
+          setToken('');
+        }
+
+      } else {
+        const errorData = await response.json();
+        setErrorAuthe('' + errorData.message);
+      }
+    } catch (error) {
+      console.error('log failed:', error);
+      setErrorAuthe('Il y a eu une erreur dans la requête');
+    }
   };
 
   return (
