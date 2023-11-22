@@ -7,14 +7,14 @@ import React from "react";
 import Discussion from "../Component/widgetDiscussion";
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
-interface ListClassRoomProps {
-  dataClassRoom: string[];
+interface ListChatRoomProps {
+  dataChatRoom: string[];
 }
 
-const ListClassRoom: React.FC<ListClassRoomProps> = ({ dataClassRoom }) => {
+const ListChatRoom: React.FC<ListChatRoomProps> = ({ dataChatRoom }) => {
   return (
     <View>
-      {dataClassRoom.map((discussion, index) => (
+      {dataChatRoom.map((discussion, index) => (
         <>
           <Discussion key={index} styles={style.discussionStyle}>
             <Text style={style.csspp}>
@@ -51,4 +51,4 @@ const style = StyleSheet.create({
   },
 });
 
-export default ListClassRoom;
+export default ListChatRoom;

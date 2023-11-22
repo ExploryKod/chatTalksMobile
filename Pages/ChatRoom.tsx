@@ -4,12 +4,31 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import useGetData from "../Hook/useGetData";
 
-export default function ClassRoom() {
+interface IRoom {
+  description: string;
+  id: number;
+  name: string;
+}
+
+export default function ChatRoom() {
+  const serverHost: string = "https://go-chat-docker.onrender.com"
+
+  const { data } = useGetData(`${serverHost}/chat/rooms`);
+  console.log(data);
   return (
     <Main styles={style.disposition}>
       <Text style={{ fontSize: 20 }}>Les classes</Text>
+        <View>
+            {data?.map((room: IRoom) => (
+            <Text key={room.id}>{room.name}</Text>
+            ))}
+        </View>
     </Main>
+
+
+
   );
 }
 
