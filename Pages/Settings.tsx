@@ -5,11 +5,39 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import React from "react";
+import {useNavigation} from "@react-navigation/native";
+import {useLoggedStore} from "../StateManager/userStore";
+import {NativeStackNavigationProp} from "@react-navigation/native-stack";
+
+export type RootFromLogin = {
+  Login: undefined;
+};
+
+export type ProfileScreenProp = NativeStackNavigationProp<RootFromLogin>;
 
 export default function Settings() {
+  const navigation = useNavigation<ProfileScreenProp>();
+
+  const handleLogout = () => {
+    removeToken();
+    removeUsername();
+    removeAdminStatus();
+    // Redirect to the login page or any other desired page after logout
+    navigation.navigate('Login');
+  };
+
+  const { removeToken, removeUsername, removeAdminStatus } = useLoggedStore();
   return (
     <Main styles={style.disposition}>
-      <Text style={{ fontSize: 20 }}>Settings</Text>
+      <Text style={{ fontSize: 20, marginLeft: 10, marginTop: 30 }}>Paramètres</Text>
+      <View style={{ maxWidth: 200, marginLeft: 10, marginTop: 5 }}>
+        <Button
+            onPress={handleLogout}
+            title="Se déconnecter"
+            color="#841584"
+            accessibilityLabel="Se déconnecter"
+        />
+      </View>
     </Main>
   );
 }
@@ -23,6 +51,7 @@ const style = StyleSheet.create({
     alignItems: 'center',
     padding: hp(1),
   },
+
   disposition: {
     flex: 1,
     flexDirection: 'column',

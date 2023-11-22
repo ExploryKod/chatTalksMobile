@@ -8,7 +8,7 @@ import { LogOut } from "lucide-react-native";
 import ClassRoom from "./ClassRoom";
 import ListDiscussion from "./Discussion";
 import Settings from "./Settings";
-import Logout, {ProfileScreenProp} from "./Logout";
+import Logout, {ProfileScreenProp} from "./Settings";
 
 export default function Profile() {
 
@@ -45,16 +45,6 @@ export default function Profile() {
                     }
                 }}
                 name="Settings" component={Settings}/>
-
-            <Tab.Screen
-                options={{
-                    tabBarIcon: (() => <LogOut style={style.iconeCss}/>),
-                    tabBarIconStyle: {
-                        width: wp(10),
-                        height: hp(4)
-                    }
-                }}
-                name="Logout" component={Logout}/>
         </Tab.Navigator>
 
     );
