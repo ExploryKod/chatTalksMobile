@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLoggedStore } from "../StateManager/userStore";
+import Toast from "react-native-toast-message";
 export default function useGetData(apiEndPoint: string) {
     const { token } = useLoggedStore();
     const [data, setData] = useState<any>(null);
@@ -20,7 +21,12 @@ export default function useGetData(apiEndPoint: string) {
                 });
 
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    Toast.show({
+                        type: 'error',
+                        text1: "Il y a eu une erreur dans la requête au serveur",
+                        text2: "il peut s'agir d'un problème de connexion: contactez l'administrateur"
+                    });
+                    return;
                 }
 
                 const responseData = await response.json();

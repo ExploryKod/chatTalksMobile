@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import {useLoggedStore} from "../StateManager/userStore";
+import Toast from 'react-native-toast-message';
 import React from "react";
 
 //const {height, width} = Dimensions.get('window');
@@ -46,13 +47,19 @@ export default function Login() {
   const handleSubmit = async () => {
 
     if(inputText.Username === undefined || inputText.Password === undefined) {
-        setErrorAuthe('Veuillez remplir tous les champs');
-        return;
+      Toast.show({
+        type: 'error',
+        text1: "Vous n'avez pas rempli tous les champs"
+      });
+      return;
     }
 
     if(inputText.Username === '' || inputText.Password === '') {
-        setErrorAuthe('Veuillez remplir tous les champs');
-        return;
+      Toast.show({
+        type: 'error',
+        text1: "Vous n'avez pas rempli tous les champs"
+      });
+      return;
     }
 
     try {
@@ -77,15 +84,24 @@ export default function Login() {
           setToken(data.token);
           setUsername(data.username);
           setAdminStatus(data.admin);
+          Toast.show({
+            type: 'success',
+            text1: `Bienvenue ${data.username}`
+          });
+
           navigation.navigate('Profile');
         } else {
           console.log("data ====> no token")
+          Toast.show({
+            type: 'error',
+            text1: 'There is no token'
+          });
           setToken('');
         }
 
       } else {
         const errorData = await response.json();
-        setErrorAuthe('' + errorData.message);
+        setErrorAuthe('Il y a eu une erreur: ' + errorData.message);
       }
     } catch (error) {
       console.error('log failed:', error);

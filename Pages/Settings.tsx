@@ -8,6 +8,7 @@ import React from "react";
 import {useNavigation} from "@react-navigation/native";
 import {useLoggedStore} from "../StateManager/userStore";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
+import Toast from "react-native-toast-message";
 
 export type RootFromLogin = {
   Login: undefined;
@@ -22,6 +23,10 @@ export default function Parameter() {
     removeToken();
     removeUsername();
     removeAdminStatus();
+    Toast.show({
+      type: 'error',
+      text1: "Vous êtes bien déconnecté"
+    });
     // Redirect to the login page or any other desired page after logout
     navigation.navigate('Login');
   };
