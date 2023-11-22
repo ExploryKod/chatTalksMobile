@@ -7,8 +7,8 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { LogOut } from "lucide-react-native";
 import ClassRoom from "./ClassRoom";
 import ListDiscussion from "./Discussion";
-import Settings from "./Settings";
-import Logout, {ProfileScreenProp} from "./Settings";
+import { Settings } from 'lucide-react-native';
+import Parameter from "./Settings";
 
 export default function Profile() {
 
@@ -38,13 +38,14 @@ export default function Profile() {
 
             <Tab.Screen
                 options={{
-                    tabBarIcon: (() => <MaterialIcon name="settings" style={style.iconeCss}/>),
+                    tabBarIcon: (() => <Settings color="#A3298B" size={hp(4)}/>),
                     tabBarIconStyle: {
                         width: wp(10),
                         height: hp(4)
                     }
                 }}
-                name="Settings" component={Settings}/>
+                name="Settings" component={Parameter}/>
+
         </Tab.Navigator>
 
     );

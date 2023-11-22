@@ -15,7 +15,7 @@ export type RootFromLogin = {
 
 export type ProfileScreenProp = NativeStackNavigationProp<RootFromLogin>;
 
-export default function Settings() {
+export default function Parameter() {
   const navigation = useNavigation<ProfileScreenProp>();
 
   const handleLogout = () => {
