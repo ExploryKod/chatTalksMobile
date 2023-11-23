@@ -9,6 +9,7 @@ import Discussion from "../Component/widgetDiscussion";
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { MessagesSquare } from 'lucide-react-native';
 
 type RootFromMessageEchange = {
   MessageEchange: undefined;
@@ -28,7 +29,7 @@ export default function ListDiscussion() {
         onPress={handleOpenMessageEchange}
       >
         <Text style={style.csspp}>
-          <MaterialIcon name="person" size={40} />
+          <MessagesSquare color="#A3298B" size={hp(4)}/>
         </Text>
         <View>
           <Text style={{ fontSize: 20 }}>Username</Text>
@@ -40,7 +41,7 @@ export default function ListDiscussion() {
         onPress={handleOpenMessageEchange}
       >
         <Text style={style.csspp}>
-          <MaterialIcon name="person" size={40} />
+          <MessagesSquare color="#A3298B" size={hp(4)}/>
         </Text>
         <View>
           <Text style={{ fontSize: 20 }}>Username</Text>
@@ -54,7 +55,7 @@ export default function ListDiscussion() {
 const style = StyleSheet.create({
   csspp: {
     margin: hp(0.3),
-    backgroundColor: 'blue',
+    backgroundColor: 'white',
     height: hp(8),
     width: wp(15),
     textAlign: 'center',

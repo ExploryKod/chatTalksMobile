@@ -36,7 +36,7 @@ export default function Profile() {
                         height: hp(4)
                     },
                 }}
-                name="ClassRoom" component={ChatRoom}/>
+                name="Salles" component={ChatRoom}/>
 
             <Tab.Screen
                 options={{

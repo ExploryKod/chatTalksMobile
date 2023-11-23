@@ -6,6 +6,8 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import useGetData from "../Hook/useGetData";
+import {useNavigation} from "@react-navigation/native";
+import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 
 interface IRoom {
   description: string;
@@ -13,8 +15,19 @@ interface IRoom {
   name: string;
 }
 
+type RootFromMessageEchange = {
+  MessageEchange: undefined;
+  ChatRoom: undefined;
+};
+type openMessageEchange = NativeStackNavigationProp<RootFromMessageEchange>;
+
 export default function ChatRoom() {
   const { serverUrl } = useConfig();
+  const navigationMessageEchange = useNavigation<openMessageEchange>();
+
+  const handleOpenMessageEchange = () => {
+    navigationMessageEchange.navigate('MessageEchange');
+  };
 
   const { data } = useGetData(`${serverUrl}/chat/rooms`);
   console.log(data);
@@ -23,7 +36,7 @@ export default function ChatRoom() {
       <Text style={{ fontSize: 20 }}>Les classes</Text>
         <View>
             {data?.map((room: IRoom) => (
-            <Text key={room.id}>{room.name}</Text>
+            <Text key={room.id} onPress={handleOpenMessageEchange}>{room.name}</Text>
             ))}
         </View>
     </Main>
