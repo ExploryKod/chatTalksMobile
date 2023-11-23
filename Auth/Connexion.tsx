@@ -12,6 +12,7 @@ import {
 import React, { useState } from "react";
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import {useConfig} from "../Hook/useConfig";
 
 type RootStackParamList = {
   Login: undefined;
@@ -23,7 +24,7 @@ function Connexion() {
   const [errorAuthe, setErrorAuthe] = useState('');
   const [inputText, setInputText] = useState<{ [key: string]: string }>({});
   const navigation = useNavigation<ConnexionScreenProp>();
-  const serverHost: string = "https://go-chat-docker.onrender.com"
+  const { serverUrl } = useConfig();
 
   const handleChange = (name: string, value: string) => {
     setInputText((prevState) => ({
@@ -50,7 +51,7 @@ function Connexion() {
     }
 
     try {
-      const response = await fetch(`${serverHost}/auth/register`, {
+      const response = await fetch(`${serverUrl}/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'

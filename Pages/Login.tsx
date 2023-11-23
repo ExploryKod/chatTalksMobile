@@ -11,6 +11,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import {useLoggedStore} from "../StateManager/userStore";
 import Toast from 'react-native-toast-message';
 import React from "react";
+import {useConfig} from "../Hook/useConfig";
 
 //const {height, width} = Dimensions.get('window');
 
@@ -24,17 +25,9 @@ export type LoginScreenProp = NativeStackNavigationProp<RootFromProfile>;
 export default function Login() {
   const [inputText, setInputText] = useState<{ [key: string]: string }>({});
   const [errorAuthe, setErrorAuthe] = useState('');
-  const serverHost: string = "https://go-chat-docker.onrender.com"
   const { setToken, setUsername, setAdminStatus } = useLoggedStore();
-
+  const { serverUrl } = useConfig();
   const navigation = useNavigation<LoginScreenProp>();
-
-  // const handleChange = (name: string, value: string) => {
-  //   setInputText((prevState) => ({
-  //     ...prevState,
-  //     [name]: value,
-  //   }));
-  // };
 
   const handleChange = (name: string, value: string) => {
     setInputText((prevState) => ({
@@ -63,7 +56,7 @@ export default function Login() {
     }
 
     try {
-      const response = await fetch(`${serverHost}/auth/logged`, {
+      const response = await fetch(`${serverUrl}/auth/logged`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'

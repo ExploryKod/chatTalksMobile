@@ -1,5 +1,6 @@
 import { StyleSheet, TextInput, View, Text } from "react-native";
 import Main from "../Component/Main";
+import {useConfig} from "../Hook/useConfig";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -13,9 +14,9 @@ interface IRoom {
 }
 
 export default function ChatRoom() {
-  const serverHost: string = "https://go-chat-docker.onrender.com"
+  const { serverUrl } = useConfig();
 
-  const { data } = useGetData(`${serverHost}/chat/rooms`);
+  const { data } = useGetData(`${serverUrl}/chat/rooms`);
   console.log(data);
   return (
     <Main styles={style.disposition}>
