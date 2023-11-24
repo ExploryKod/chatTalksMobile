@@ -11,14 +11,55 @@ import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import {useState} from "react";
 import RoomCard from "../Component/RoomCard";
 import {IRoom} from "../Types/chat";
+import {useLoggedStore} from "../StateManager/userStore";
 
 
 export default function ChatRoom() {
   const { serverUrl } = useConfig();
+  const { token } = useLoggedStore();
 
   const [inputName, setInputName] = useState("");
   const [inputTheme, setInputTheme] = useState("");
 
+  const createRoom = async () => {
+
+    if (inputName !== '' && inputTheme !== '') {
+      try {
+        const response = await fetch(`${serverUrl}/chat/create`, {
+          method: 'POST',
+          body: new URLSearchParams({
+            'roomName': inputName,
+            'description': inputTheme,
+          }).toString(),
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: 'same-origin'
+        });
+
+        if (response.ok) {
+          console.log('room created');
+          const data = await response.json();
+          console.log("data",data)
+          if(data.id && data.name && data.description) {
+            const newRoom ={id: data.id, name: data.name, description: data.description} as IRoom;
+            console.log('new room created', newRoom)
+             // setRoomsList([...roomsList, newRoom]);
+          } else {
+            console.log('échec de votre requête: élèments manquants');
+          }
+        } else {
+          console.log('échec de la création de room');
+        }
+
+      } catch (error) {
+        console.error('log failed:', error);
+      }
+    }else{
+      console.log('veuillez remplir tous les champs');
+    }
+  };
 
   const handleChangeName = (name: string) => {
     setInputName(name)
@@ -27,10 +68,6 @@ export default function ChatRoom() {
   const handleChangeTheme = (theme: string) => {
     setInputTheme(theme)
   };
-
-  const handleAddGroup = () => {
-    console.log("Groupe ajouter");
-  }
 
   const { data } = useGetData(`${serverUrl}/chat/rooms`);
   console.log(data);
@@ -51,7 +88,7 @@ export default function ChatRoom() {
             placeholderTextColor="black"
             placeholder="Thème"
         />
-        <Text onPress={handleAddGroup}  style={style.buttonEnvoyer}>Créer</Text>
+        <Text onPress={createRoom}  style={style.buttonEnvoyer}>Créer</Text>
       </View>
       <Text style={{ fontSize: 20, textAlign:"center", marginVertical:20}}> Salles de chat </Text>
         <View>
