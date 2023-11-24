@@ -26,7 +26,7 @@ export default function Profile() {
                         height: hp(4)
                     }
                 }}
-                name="ListDiscussion" component={ListDiscussion}/>
+                name="discussions" component={ListDiscussion}/>
 
             <Tab.Screen
                 options={{
@@ -46,7 +46,7 @@ export default function Profile() {
                         height: hp(4)
                     }
                 }}
-                name="Settings" component={Parameter}/>
+                name="Paramètres" component={Parameter}/>
 
         </Tab.Navigator>
 
