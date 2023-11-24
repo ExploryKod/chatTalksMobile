@@ -9,31 +9,23 @@ import useGetData from "../Hook/useGetData";
 import {useNavigation} from "@react-navigation/native";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import {useState} from "react";
+import RoomCard from "../Component/RoomCard";
+import {IRoom} from "../Types/chat";
 
-interface IRoom {
-  description: string;
-  id: number;
-  name: string;
-}
-
-type RootFromMessageEchange = {
-  MessageEchange: undefined;
-  ChatRoom: undefined;
-};
-type openMessageEchange = NativeStackNavigationProp<RootFromMessageEchange>;
 
 export default function ChatRoom() {
   const { serverUrl } = useConfig();
-  const navigationMessageEchange = useNavigation<openMessageEchange>();
-  const [inputText, setInputText] = useState("");
 
-  const handleChange = (name: string) => {
-    setInputText(name)
+  const [inputName, setInputName] = useState("");
+  const [inputTheme, setInputTheme] = useState("");
+
+
+  const handleChangeName = (name: string) => {
+    setInputName(name)
   };
 
-
-  const handleOpenMessageEchange = () => {
-    navigationMessageEchange.navigate('MessageEchange');
+  const handleChangeTheme = (theme: string) => {
+    setInputTheme(theme)
   };
 
   const handleAddGroup = () => {
@@ -47,20 +39,27 @@ export default function ChatRoom() {
       <View style={style.composantInput}>
         <TextInput
             keyboardType="default"
-            onChangeText={(text) => handleChange(text)}
+            onChangeText={(text) => handleChangeName(text)}
             style={style.inputProp}
             placeholderTextColor="black"
-            placeholder="Nom de la classe"
-            value={inputText}
+            placeholder="Nom de la salle"
+        />
+        <TextInput
+            keyboardType="default"
+            onChangeText={(text) => handleChangeTheme(text)}
+            style={style.inputProp}
+            placeholderTextColor="black"
+            placeholder="Thème"
         />
         <Text onPress={handleAddGroup}  style={style.buttonEnvoyer}>Créer</Text>
       </View>
       <Text style={{ fontSize: 20, textAlign:"center", marginVertical:20}}> Salles de chat </Text>
         <View>
             {data?.map((room: IRoom) => (
-            <Text key={room.id} onPress={handleOpenMessageEchange}>{room.name}</Text>
+              <RoomCard name={room.name} description={room.description} id={room.id} />
             ))}
         </View>
+
     </Main>
 
 
