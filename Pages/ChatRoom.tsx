@@ -1,4 +1,4 @@
-import { StyleSheet, TextInput, View, Text } from "react-native";
+import {StyleSheet, TextInput, View, Text, ScrollView} from "react-native";
 import Main from "../Component/Main";
 import {useConfig} from "../Hook/useConfig";
 import {
@@ -73,6 +73,12 @@ export default function ChatRoom() {
   console.log(data);
   return (
     <Main styles={style.disposition}>
+        <ScrollView style={style.containerRooms}>
+            {data?.map((room: IRoom) => (
+              <RoomCard name={room.name} description={room.description} id={room.id} />
+            ))}
+        </ScrollView>
+      <View style={style.separator}></View>
       <View style={style.composantInput}>
         <TextInput
             keyboardType="default"
@@ -90,12 +96,6 @@ export default function ChatRoom() {
         />
         <Text onPress={createRoom}  style={style.buttonEnvoyer}>Créer</Text>
       </View>
-      <Text style={{ fontSize: 20, textAlign:"center", marginVertical:20}}> Salles de chat </Text>
-        <View>
-            {data?.map((room: IRoom) => (
-              <RoomCard name={room.name} description={room.description} id={room.id} />
-            ))}
-        </View>
 
     </Main>
 
@@ -105,24 +105,40 @@ export default function ChatRoom() {
 }
 
 const style = StyleSheet.create({
-  composantInput: {
+  containerRooms: {
+    flex: 1,
+    backgroundColor: "#161C3D",
     width: wp(100),
+    height: hp(100),
+    padding: 10
+  },
+    separator: {
+        height: 10,
+        width: "100%",
+        backgroundColor: "#161C3D",
+        opacity: 0.8,
+    },
+  composantInput: {
+    width: wp(80),
     borderRadius: 25,
-    flexDirection: "row",
-    gap: hp(1),
+    paddingHorizontal: 10,
+    marginHorizontal: 20,
+    display: "flex",
+    justifyContent: "center",
     alignItems: "center",
-    padding: hp(1),
+    flexDirection: "column",
+    paddingTop: 20,
+    gap: 10,
   },
   disposition: {
     flex: 1,
     flexDirection: "column",
     backgroundColor: "white",
-    justifyContent: "flex-start",
-    gap: hp(3)
+    justifyContent: "flex-start"
   },
   inputProp: {
-    flex: 1,
-    height: hp(6),
+    width: wp(80),
+    height: hp(5),
     backgroundColor: "#dcdcdc",
     borderRadius: 10,
     fontSize: hp(2),
@@ -130,9 +146,11 @@ const style = StyleSheet.create({
   },
   buttonEnvoyer: {
     backgroundColor: "#A3298B",
-    width: wp(20),
+    minWidth: 150,
+    maxWidth: wp(50),
     height: hp(6),
     borderRadius: 10,
+    marginVertical: 10,
     textAlign: "center",
     textAlignVertical: "center",
     fontSize: hp(2.5),
