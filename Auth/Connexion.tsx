@@ -59,6 +59,7 @@ function Connexion() {
         body: new URLSearchParams({
           username: inputText.Username,
           password: inputText.ConfirmPassword,
+          email: "waiting@email.com",
         }).toString()
       });
       console.log('response login ', response)
