@@ -25,7 +25,7 @@ export type LoginScreenProp = NativeStackNavigationProp<RootFromProfile>;
 export default function Login() {
   const [inputText, setInputText] = useState<{ [key: string]: string }>({});
   const [errorAuthe, setErrorAuthe] = useState('');
-  const { setToken, setUsername, setAdminStatus } = useLoggedStore();
+  const { setToken, setUsername, setAdminStatus, username } = useLoggedStore();
   const { serverUrl } = useConfig();
   const navigation = useNavigation<LoginScreenProp>();
 
@@ -77,10 +77,12 @@ export default function Login() {
           setToken(data.token);
           setUsername(data.username);
           setAdminStatus(data.admin);
-          Toast.show({
-            type: 'success',
-            text1: `Bienvenue ${data.username}`
-          });
+          setTimeout(() => {
+            Toast.show({
+              type: 'success',
+              text1: `Bienvenue sur Chat Talks`
+            });
+            }, 500);
 
           navigation.navigate('Profile');
         } else {
