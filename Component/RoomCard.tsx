@@ -68,7 +68,7 @@ return (
             onPress={handleClick}
         >
             <View style={styles.link}>
-                <Text style={{ color: '#fff', textAlign: 'center' }}>Rejoindre le chat</Text>
+                <Text style={{ color: '#fff', textAlign: 'center', textTransform: "uppercase", fontWeight: "bold" }}>Rejoindre</Text>
             </View>
         </TouchableOpacity>
     </View>
@@ -140,9 +140,9 @@ const styles = StyleSheet.create({
     },
     link: {
         maxWidth: 250,
-        marginTop: 10,
-        paddingHorizontal: 10,
-        paddingVertical: 5,
+        marginTop: 20,
+        paddingHorizontal: 25,
+        paddingVertical: 15,
         backgroundColor: '#A3298B',
         color: '#fff',
         borderRadius: 5,

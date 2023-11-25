@@ -94,7 +94,7 @@ export default function ChatRoom() {
             placeholderTextColor="black"
             placeholder="Thème"
         />
-        <Text onPress={createRoom}  style={style.buttonEnvoyer}>Créer</Text>
+        <Text onPress={createRoom}  style={style.buttonEnvoyer}>Créer une salle</Text>
       </View>
 
     </Main>
@@ -147,14 +147,16 @@ const style = StyleSheet.create({
   buttonEnvoyer: {
     backgroundColor: "#A3298B",
     minWidth: 150,
-    maxWidth: wp(50),
+    maxWidth: wp(80),
     height: hp(6),
-    borderRadius: 10,
+    borderRadius: 8,
     marginVertical: 10,
+    paddingVertical: 2,
+    paddingHorizontal: 15,
     textAlign: "center",
     textAlignVertical: "center",
     fontSize: hp(2.5),
-    color: "white"
+    color: "#fff"
   },
 
   messageLeft: {
