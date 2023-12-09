@@ -19,3 +19,18 @@ type RootFromMessageEchange = {
 };
 
 export type openMessageEchange = NativeStackNavigationProp<RootFromMessageEchange>;
+
+export interface SenderMessage {
+    sendername: string | null;
+    sendermessage: string | null;
+    action: string | null;
+}
+
+export interface ISavedMessage extends SenderMessage {
+    id: string | null;
+    user_id: string | null;
+    room_id: string | null;
+    created_at: string | null;
+    username: string | null;
+    content: string | null;
+}

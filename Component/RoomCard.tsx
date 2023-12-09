@@ -39,6 +39,7 @@ useEffect(() => {
                 navigationMessageEchange.navigate('MessageEchange');
             } else {
                 console.log('échec de la réponse chatroom');
+                console.log(response)
             }
 
         } catch (error) {
@@ -78,9 +79,7 @@ return (
 
 const styles = StyleSheet.create({
     container: {
-        width: 250,
-        borderWidth: 5,
-        borderColor: '#A3298B',
+        width: '90%',
         boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
         backgroundColor: '#F2F3F7',
         paddingTop: 20,
