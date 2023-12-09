@@ -46,7 +46,7 @@ export default function ListDiscussion() {
 const style = StyleSheet.create({
     csspp: {
       margin: hp(0.3),
-      backgroundColor: "blue",
+      backgroundColor: "#F2F3F7",
       height: hp(8),
       width: wp(15),
       textAlign: "center",

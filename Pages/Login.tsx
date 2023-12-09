@@ -16,8 +16,8 @@ export type LoginScreenProp = NativeStackNavigationProp<RootFromProfile>;
 
 export default function Login() {
   const data = {
-    user: "Usrname",
-    password : ""
+    user: "khalifa",
+    password : "dione"
   }
    const [inputText, setInputText] = useState<{ [key: string]: string }>({});
    const [errorAuthe, setErrorAuthe] = useState("");
@@ -45,8 +45,10 @@ export default function Login() {
            console.log("Usernamennn :", username);
            console.log("Password1 :", password1);
           
+          
        }
        handleConnect();
+       
      };
 
      const handleConnect = () => {

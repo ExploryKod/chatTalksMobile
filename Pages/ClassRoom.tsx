@@ -2,11 +2,11 @@ import { StyleSheet, TextInput, View, Text } from "react-native";
 import Main from "../Component/Main";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useState } from "react";
-import Class from "./Class";
+import ListClassRoom from './ListClassRoom';
 
 export default function ClassRoom() {
-
-  const [dataClassRoom, setDataClassRoom] = useState(["khali"])
+  const dataClassRoomName :string [] = [];
+  const [dataClassRoom, setDataClassRoom] = useState(dataClassRoomName)
   
   const [inputText, setInputText] = useState("");
 
@@ -34,13 +34,7 @@ export default function ClassRoom() {
          />  
         <Text onPress={handleAddGroup}  style={style.buttonEnvoyer}>Créer</Text>
       </View>
-      <View>
-        {
-          dataClassRoom.map((groupName) => 
-             <Text style={{margin:10, fontSize:30}}>{groupName}</Text> 
-          )
-        }
-      </View>
+      <ListClassRoom dataClassRoom={dataClassRoom} />
     </Main>
   );
 }
