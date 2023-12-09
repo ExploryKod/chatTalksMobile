@@ -1,3 +1,4 @@
+declare module 'react-native-websocket';
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 
 export interface IRoom {
