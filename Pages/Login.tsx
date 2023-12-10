@@ -23,6 +23,7 @@ export type RootFromProfile = {
 export type LoginScreenProp = NativeStackNavigationProp<RootFromProfile>;
 
 export default function Login() {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [inputText, setInputText] = useState<{ [key: string]: string }>({});
   const [errorAuthe, setErrorAuthe] = useState('');
   const { setToken, setUsername, setAdminStatus, username } = useLoggedStore();
@@ -38,12 +39,13 @@ export default function Login() {
 
 
   const handleSubmit = async () => {
-
+    setIsLoading(true);
     if(inputText.Username === undefined || inputText.Password === undefined) {
       Toast.show({
         type: 'error',
         text1: "Vous n'avez pas rempli tous les champs"
       });
+      setIsLoading(false);
       return;
     }
 
@@ -52,6 +54,7 @@ export default function Login() {
         type: 'error',
         text1: "Vous n'avez pas rempli tous les champs"
       });
+      setIsLoading(false);
       return;
     }
 
@@ -69,11 +72,11 @@ export default function Login() {
       console.log('response login ', response)
       if (response.ok) {
         console.log('réponse bien reçu');
-
         const data = await response.json();
         if(data.token) {
           console.log("data ====>", data)
           console.log('token bien reçu ====>', data.token)
+          setIsLoading(false);
           setToken(data.token);
           setUsername(data.username);
           setAdminStatus(data.admin);
@@ -87,6 +90,7 @@ export default function Login() {
           navigation.navigate('Profile');
         } else {
           console.log("data ====> no token")
+          setIsLoading(false);
           Toast.show({
             type: 'error',
             text1: 'There is no token'
@@ -95,10 +99,12 @@ export default function Login() {
         }
 
       } else {
+        setIsLoading(false);
         const errorData = await response.json();
         setErrorAuthe('Il y a eu une erreur: ' + errorData.message);
       }
     } catch (error) {
+      setIsLoading(false);
       console.error('log failed:', error);
       setErrorAuthe('Il y a eu une erreur dans la requête');
     }
@@ -138,7 +144,7 @@ export default function Login() {
         </Text>
         <View style={{ display: 'flex', flexDirection: 'row', gap: wp(40) }}>
           <Text style={{ color: '#A3298B', fontSize: hp(2) }} onPress={handleRegister}>
-            Create Account
+            {isLoading ? "Creation de votre compte ..." : "Créer un compte"}
           </Text>
           <Text style={{ color: '#A3298B', fontSize: hp(2) }}>Need Help</Text>
         </View>

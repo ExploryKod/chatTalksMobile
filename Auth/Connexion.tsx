@@ -22,6 +22,7 @@ type ConnexionScreenProp = NativeStackNavigationProp<RootStackParamList>;
 
 function Connexion() {
   const [errorAuthe, setErrorAuthe] = useState('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [inputText, setInputText] = useState<{ [key: string]: string }>({});
   const navigation = useNavigation<ConnexionScreenProp>();
   const { serverUrl } = useConfig();
@@ -35,19 +36,24 @@ function Connexion() {
 
   const handleSubmit = async () => {
 
+    setIsLoading(true);
+
     if(inputText.Username === undefined || inputText.Password === undefined) {
       setErrorAuthe('Veuillez remplir tous les champs');
+      setIsLoading(false);
       return;
     }
 
     if(inputText.Username === '' || inputText.Password === '') {
       setErrorAuthe('Veuillez remplir tous les champs');
+      setIsLoading(false);
       return;
     }
 
     if(inputText.Password !== inputText.ConfirmPassword) {
-        setErrorAuthe('Les mots de passe ne correspondent pas');
-        return;
+      setErrorAuthe('Les mots de passe ne correspondent pas');
+      setIsLoading(false);
+      return;
     }
 
     try {
@@ -65,7 +71,7 @@ function Connexion() {
       console.log('response login ', response)
       if (response.ok) {
         console.log('réponse bien reçu');
-
+        setIsLoading(false);
         const data = await response.json();
         console.log('data ====>', data);
         setErrorAuthe('' + data.message);
@@ -73,10 +79,12 @@ function Connexion() {
 
       } else {
         const errorData = await response.json();
+        setIsLoading(false);
         setErrorAuthe('' + errorData.message);
       }
     } catch (error) {
       console.error('log failed:', error);
+      setIsLoading(false);
       setErrorAuthe('Il y a eu une erreur dans la requête');
     }
   };
@@ -134,7 +142,7 @@ function Connexion() {
             onPress={handleLogin}
             style={{ color: '#A3298B', fontSize: hp(2) }}
           >
-            Login to App
+            {isLoading ? 'Connexion ...' : 'Se connecter'}
           </Text>
           <Text style={{ color: '#A3298B', fontSize: hp(2) }}>Need Help</Text>
         </View>

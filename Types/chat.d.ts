@@ -35,3 +35,12 @@ export interface ISavedMessage extends SenderMessage {
     username: string | null;
     content: string | null;
 }
+
+export interface MessageInput {
+    action: string;
+    message: string;
+    target: {
+        id: string;
+        name: string;
+    };
+}

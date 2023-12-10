@@ -4,7 +4,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import React from "react";
+import React, {useState} from "react";
 import {useNavigation} from "@react-navigation/native";
 import {useLoggedStore} from "../StateManager/userStore";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
@@ -18,6 +18,7 @@ export type ProfileScreenProp = NativeStackNavigationProp<RootFromLogin>;
 
 export default function Parameter() {
   const navigation = useNavigation<ProfileScreenProp>();
+
 
   const handleLogout = () => {
     removeToken();
