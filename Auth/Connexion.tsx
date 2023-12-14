@@ -2,7 +2,7 @@ import {
   StyleSheet,
   TextInput,
   View,
-  Text
+  Text, Image
 } from 'react-native';
 import Main from "../Component/Main";
 import {
@@ -96,13 +96,24 @@ function Connexion() {
 
   return (
     <Main styles={style.disposition}>
+      <View style={style.imageContainer}>
+        <Image
+            style={{
+              resizeMode: 'cover',
+              height: 100,
+              width: 100,
+              tintColor: "#4E78A2E63"
+            }}
+            source={require('./assets/black-cat.png')}
+        />
+      </View>
       <View style={style.composantInput}>
         <TextInput
           keyboardType="default"
           onChangeText={(text) => handleChange('Username', text)}
           style={style.inputProp}
           placeholderTextColor="black"
-          placeholder="Username"
+          placeholder="Votre pseudo"
           value={inputText.Username}
         />
         <TextInput
@@ -111,7 +122,7 @@ function Connexion() {
           onChangeText={(text) => handleChange('Password', text)}
           style={style.inputProp}
           placeholderTextColor="black"
-          placeholder="Password"
+          placeholder="Mot de passe"
           value={inputText.Password}
         />
         <TextInput
@@ -120,7 +131,7 @@ function Connexion() {
           onChangeText={(text) => handleChange('ConfirmPassword', text)}
           style={style.inputProp}
           placeholderTextColor="black"
-          placeholder="Confirm Password"
+          placeholder="Confirmer le mot de passe"
           value={inputText.ConfirmPassword}
         />
 
@@ -129,7 +140,7 @@ function Connexion() {
         )}
 
         <Text style={style.buttonCreate} onPress={handleSubmit}>
-          Create Account
+          {isLoading ? 'Création ...' : 'Créer un compte'}
         </Text>
         <View
           style={{
@@ -140,11 +151,10 @@ function Connexion() {
         >
           <Text
             onPress={handleLogin}
-            style={{ color: '#A3298B', fontSize: hp(2) }}
+            style={{ color: 'white', fontSize: hp(2) }}
           >
-            {isLoading ? 'Connexion ...' : 'Se connecter'}
+            Se connecter
           </Text>
-          <Text style={{ color: '#A3298B', fontSize: hp(2) }}>Need Help</Text>
         </View>
       </View>
     </Main>
@@ -152,23 +162,24 @@ function Connexion() {
 }
 const style = StyleSheet.create({
   composantInput: {
-    borderLeftWidth: wp(2),
-    borderLeftColor: '#A3298B',
-    borderRightWidth: wp(2),
-    borderRightColor: '#A3298B',
     width: wp(95),
     alignItems: 'center',
-    borderRadius: 25,
+  },
+  imageContainer : {
+    width: wp(100),
+    alignItems: 'flex-start',
+    marginTop: hp(10),
+    marginBottom: -30,
+    paddingLeft: 200,
   },
   disposition: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: wp(30),
-    backgroundColor: 'white',
+    gap: wp(0),
+    backgroundColor: '#161C3D',
   },
-
   inputProp: {
     width: wp(85),
     height: hp(8),

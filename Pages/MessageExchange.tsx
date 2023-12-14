@@ -15,7 +15,7 @@ import {useLoggedStore} from "../StateManager/userStore";
 import Toast from "react-native-toast-message";
 import type {ISavedMessage, MessageInput } from "../Types/chat";
 import {useConfig} from "../Hook/useConfig";
-import * as crypto from "crypto";
+
 
 
 export default function MessageEchange() {
@@ -34,8 +34,7 @@ export default function MessageEchange() {
       action: "send-message",
       message: text,
       target: {
-        id:  uuidv4(),
-        // id: "989996dd-f092-479e-a1b6-192c0a7d19f1",
+        id: "989996dd-f092-479e-a1b6-192c0a7d19f1",
         name: "1", // Adjust the room name as needed
       },
     });
@@ -145,11 +144,22 @@ export default function MessageEchange() {
 
     if (personName && action) {
       if (personName != "" && (action === "user-join")) {
-        toastMessage(`${personName} vient de rejoindre la salle`);
+        Toast.show(
+            {
+              type: 'info',
+              text1: `${personName} vient de rejoindre la salle`,
+            }
+        );
         setConnectedUsers((prevConnectedUsers) => [...prevConnectedUsers, personName]);
       }
       if (personName != "" && action === "user-left") {
-        toastMessage(`${personName} vient de quitter la salle`);
+        Toast.show(
+            {
+                type: 'info',
+                text1: `${personName} vient de quitter la salle`,
+            }
+        );
+
         setConnectedUsers((prevConnectedUsers) => prevConnectedUsers.filter((user) => user !== personName));
       }
     }

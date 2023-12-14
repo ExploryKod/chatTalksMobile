@@ -140,13 +140,12 @@ export default function Login() {
         )}
 
         <Text style={style.buttonLogin} onPress={handleSubmit}>
-          Login
+          {isLoading ? "Connexion ..." : "Se connecter"}
         </Text>
         <View style={{ display: 'flex', flexDirection: 'row', gap: wp(40) }}>
-          <Text style={{ color: '#A3298B', fontSize: hp(2) }} onPress={handleRegister}>
-            {isLoading ? "Creation de votre compte ..." : "Créer un compte"}
+          <Text style={{ color: 'white', fontSize: hp(2) }} onPress={handleRegister}>
+            Créer un compte
           </Text>
-          <Text style={{ color: '#A3298B', fontSize: hp(2) }}>Need Help</Text>
         </View>
       </View>
     </Main>
@@ -155,13 +154,8 @@ export default function Login() {
 
 const style = StyleSheet.create({
   composantInput: {
-    borderLeftWidth: wp(2),
-    borderLeftColor: '#A3298B',
-    borderRightWidth: wp(2),
-    borderRightColor: '#A3298B',
     width: wp(95),
     alignItems: 'center',
-    borderRadius: 25,
   },
   disposition: {
     flex: 1,
@@ -169,7 +163,7 @@ const style = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: wp(30),
-    backgroundColor: 'white',
+    backgroundColor: '#161C3D',
   },
 
   inputProp: {
