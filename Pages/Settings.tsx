@@ -12,6 +12,7 @@ import Toast from "react-native-toast-message";
 
 export type RootFromLogin = {
   Login: undefined;
+  TcpClient: undefined;
 };
 
 export type ProfileScreenProp = NativeStackNavigationProp<RootFromLogin>;
@@ -32,6 +33,10 @@ export default function Parameter() {
     navigation.navigate('Login');
   };
 
+  const handleTestDiscussion = () => {
+    navigation.navigate('TcpClient');
+  };
+
   const { removeToken, removeUsername, removeAdminStatus } = useLoggedStore();
   return (
     <Main styles={style.disposition}>
@@ -42,6 +47,13 @@ export default function Parameter() {
             title="Se déconnecter"
             color="#841584"
             accessibilityLabel="Se déconnecter"
+        />
+        <Button
+
+            onPress={handleTestDiscussion}
+            title="Salon de discussion - test"
+            color="#841584"
+            accessibilityLabel="salon"
         />
       </View>
     </Main>
