@@ -27,6 +27,24 @@ const TcpClient: React.FC = () => {
     const [action, setAction] = useState<string>('')
 
 
+    const handleJoinRoom = () => {
+        if(!ws) {
+            return;
+        }
+        ws.send(JSON.stringify({
+            action: "join-hub",
+            message: "1"
+        }));
+    }
+
+    useEffect(() => {
+        if (!ws) {
+            return;
+        }
+        handleJoinRoom();
+    } , [ws])
+
+
     const handleMessageChange = (text: string) => {
         console.log(text)
         setMessageInput({
@@ -183,7 +201,7 @@ const onMessageAction = (action: string, personName: string) => {
     }
 }
 
-// console.log("messages =======> ", messages)
+console.log("messages =======> ", messages)
 // console.log("Message Input ==> :", messageInput);
 return (
     <View>

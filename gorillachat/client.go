@@ -106,8 +106,6 @@ func (client *Client) readPump() {
 			}
 			break
 		}
-		//message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
-		//client.hub.broadcast <- message
 		client.handleNewMessage(jsonMessage)
 	}
 }
@@ -205,13 +203,8 @@ func (client *Client) handleNewMessage(jsonMessage []byte) {
 	switch message.Action {
 	case SendMessageAction:
 		hubName := message.Target.GetName()
-		println("hubName: ", hubName)
-		//if hub := client.wsServer.findHubByID(hubID); hub != nil {
-		//	println("hub found")
-		//	hub.broadcast <- &message
-		//}
+
 		if hub := client.wsServer.findHubByName(hubName); hub != nil {
-			println("hub found")
 			hub.broadcast <- &message
 		}
 	case JoinHubAction:
