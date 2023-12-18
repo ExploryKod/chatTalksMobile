@@ -1,26 +1,25 @@
 import React, {useEffect, useState} from 'react';
 import {View, Image, Text, TouchableOpacity, StyleSheet, ImageBackground} from 'react-native';
-import { IRoom } from '../Types/chat';
-import { useConfig } from '../Hook/useConfig';
+import {IRoom} from '../Types/chat';
+import {useConfig} from '../Hook/useConfig';
 import {useLoggedStore} from "../StateManager/userStore";
 import {useNavigation} from "@react-navigation/native";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import type {openMessageEchange} from "../Types/chat";
 import * as url from "url";
 
+const RoomCard = ({name, description, id}: IRoom) => {
 
+    const {serverUrl} = useConfig();
+    const {token} = useLoggedStore();
+    const [image, setImage] = useState<string>("");
+    const queryChat: string = `?id=${id.toString()}&name=${name}&description=${description}`
+    const imageUrl = "https://images.pexels.com/photos/3937272/pexels-photo-3937272.jpeg"
+    const navigationMessageEchange = useNavigation<openMessageEchange>();
 
-const RoomCard = ({ name, description, id }: IRoom) => {
-const { serverUrl } = useConfig();
-const { token } = useLoggedStore();
-const [image, setImage] = useState<string>("");
-const queryChat: string = `?id=${id.toString()}&name=${name}&description=${description}`
-const imageUrl = "https://images.pexels.com/photos/3937272/pexels-photo-3937272.jpeg"
-const navigationMessageEchange = useNavigation<openMessageEchange>();
-
-useEffect(() => {
-    setImage(`https://source.unsplash.com/200x200/?${name.split(' ')[0]}`);
-}, [image]);
+    useEffect(() => {
+        setImage(`https://source.unsplash.com/200x200/?${name.split(' ')[0]}`);
+    }, [image]);
 
 
     const handleClick = async () => {
@@ -36,7 +35,8 @@ useEffect(() => {
             if (response.ok) {
                 const data = await response.json();
                 console.log("chatroom DATA :", data)
-                navigationMessageEchange.navigate('MessageEchange');
+                console.log("ID PROP :", id)
+                navigationMessageEchange.navigate('MessageEchange', { roomId: id, roomName: name, roomDescription: description});
             } else {
                 console.log('échec de la réponse chatroom');
                 console.log(response)
@@ -47,34 +47,38 @@ useEffect(() => {
         }
     };
 
-return (
-    <View style={styles.container}>
+    return (
+        <View style={styles.container}>
 
-        <View  style={styles.body}>
-            {image ?
-                ( <ImageBackground source={{ uri: image }} style={styles.image}>
-                <View style={styles.body__text}>
-                    <Text style={styles.name}>{name}</Text>
-                </View>
-            </ImageBackground>):
-                (<View style={styles.body__text}>
-                <Text style={styles.name}>{name}</Text>
-            </View>)}
+            <View style={styles.body}>
+                {image ?
+                    (<ImageBackground source={{uri: image}} style={styles.image}>
+                        <View style={styles.body__text}>
+                            <Text style={styles.name}>{name}</Text>
+                        </View>
+                    </ImageBackground>) :
+                    (<View style={styles.body__text}>
+                        <Text style={styles.name}>{name}</Text>
+                    </View>)}
 
-        </View>
-        <View  style={styles.wrapperDescription}>
-            <Text style={styles.description}>{description}</Text>
-        </View>
-        <TouchableOpacity
-            onPress={handleClick}
-        >
-            <View style={styles.link}>
-                <Text style={{ color: '#fff', textAlign: 'center', textTransform: "uppercase", fontWeight: "bold" }}>Rejoindre</Text>
             </View>
-        </TouchableOpacity>
-    </View>
-);
-
+            <View style={styles.wrapperDescription}>
+                <Text style={styles.description}>{description}</Text>
+            </View>
+            <TouchableOpacity
+                onPress={handleClick}
+            >
+                <View style={styles.link}>
+                    <Text style={{
+                        color: '#fff',
+                        textAlign: 'center',
+                        textTransform: "uppercase",
+                        fontWeight: "bold"
+                    }}>Rejoindre</Text>
+                </View>
+            </TouchableOpacity>
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
@@ -130,7 +134,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#A3298B',
     },
-    name : {
+    name: {
         fontSize: 18,
         color: '#fff',
         fontWeight: 'bold',

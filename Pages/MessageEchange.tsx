@@ -6,7 +6,9 @@ import Toast from "react-native-toast-message";
 import type {ISavedMessage, Message} from "../Types/chat";
 
 
-const TcpClient: React.FC = () => {
+const MessageEchange: React.FC = ({  navigation, route }) => {
+        const { roomId } = route.params || {};
+        // console.log("room id ==> ", route.params.roomId)
     const {serverUrl} = useConfig();
     const {token, username} = useLoggedStore();
     const socketUrl = `wss://go-chat-docker.onrender.com/ws?name=nass`;
@@ -21,7 +23,6 @@ const TcpClient: React.FC = () => {
     const [messageHistory, setMessageHistory] = useState<string[]>([]);
     const [messages, setMessages] = useState<ISavedMessage[]>([]);
     const [connectedUsers, setConnectedUsers] = useState<string[]>([]);
-    const [roomId, setRoomId] = useState<string>('')
     const [sendername, setSendername] = useState<string>('')
     const [sendermessage, setSendermessage] = useState<string>('')
     const [action, setAction] = useState<string>('')
@@ -33,7 +34,7 @@ const TcpClient: React.FC = () => {
         }
         ws.send(JSON.stringify({
             action: "join-hub",
-            message: "1"
+            message: roomId,
         }));
     }
 
@@ -60,7 +61,6 @@ const TcpClient: React.FC = () => {
             return prevState
         })
 
-        setRoomId("1")
         setSendername(username)
         setSendermessage(text)
         setAction('message-saved')
@@ -110,7 +110,7 @@ useEffect(() => {
                     id: "989996dd-f092-479e-a1b6-192c0a7d19f1",
                     content: null,
                     username: null,
-                    room_id: "1",
+                    room_id: roomId,
                     user_id: null,
                     created_at: null,
 
@@ -205,7 +205,7 @@ console.log("messages =======> ", messages)
 // console.log("Message Input ==> :", messageInput);
 return (
     <View>
-        <Text>TCP Client Example</Text>
+        <Text>TCP Client Example {roomId}</Text>
         {/*<Button title="Connect to Server" onPress={connectWebSocket}/>*/}
         <TextInput
             placeholder="Enter message"
@@ -216,7 +216,10 @@ return (
         <Text>Server Response: {serverResponse}</Text>
         <Text>Message History:</Text>
         <ScrollView>
-            {messages.map((message, index) => (
+            {messages
+                .filter((message) =>
+                    (message.room_id && message.room_id === roomId) && message.action === "send-message")
+                .map((message, index) => (
                 <View>
                     <Text key={index}>{message.sendermessage}</Text>
                 </View>
@@ -228,4 +231,4 @@ return (
 }
 ;
 
-export default TcpClient;
+export default MessageEchange;

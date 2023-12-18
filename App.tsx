@@ -4,11 +4,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from './Pages/Login';
 import Profile from './Pages/Profile';
-import MessageEchange from './Pages/MessageExchange';
-import TcpClient from "./Pages/TcpClient";
-import Toast from 'react-native-toast-message';
 import ErrorBoundary from 'react-native-error-boundary';
 import { StyleSheet, Text, View } from "react-native";
+import Toast from 'react-native-toast-message';
+import MessageEchange from './Pages/MessageEchange';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 const Stack = createNativeStackNavigator();
@@ -33,7 +32,6 @@ export default function Connex() {
                         <Stack.Screen name="Inscription" component={Connexion}/>
                         <Stack.Screen name="Login" component={Login}/>
                         <Stack.Screen name="Profile" component={Profile}/>
-                        <Stack.Screen name="TcpClient" component={TcpClient}/>
                         <Stack.Screen name="MessageEchange" component={MessageEchange}/>
                     </Stack.Navigator>
                 </NavigationContainer>
