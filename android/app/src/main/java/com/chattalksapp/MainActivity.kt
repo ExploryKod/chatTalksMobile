@@ -4,6 +4,7 @@ import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
 import com.facebook.react.defaults.DefaultReactActivityDelegate
+import android.os.Bundle;
 
 class MainActivity : ReactActivity() {
 
@@ -19,4 +20,15 @@ class MainActivity : ReactActivity() {
    */
   override fun createReactActivityDelegate(): ReactActivityDelegate =
       DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled)
+
+    /**
+    * We override [onCreate] to avoid calling [super.onCreate] which calls
+    * [ReactActivityDelegate.onCreate] which in turn calls [ReactInstanceManager.onHostResume] which
+    * starts the React instance. We don't want to start the React instance in the Activity onCreate
+    * but in [onPostResume] instead.
+    https://reactnavigation.org/docs/getting-started/#installing-dependencies-into-a-bare-react-native-project
+   */
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(null)
+  }
 }

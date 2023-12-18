@@ -1,118 +1,80 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import Connexion from './Auth/Connexion';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Login from './Pages/Login';
+import Profile from './Pages/Profile';
+import MessageEchange from './Pages/MessageExchange';
+import TcpClient from "./Pages/TcpClient";
+import Toast from 'react-native-toast-message';
+import ErrorBoundary from 'react-native-error-boundary';
+import { StyleSheet, Text, View } from "react-native";
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const Stack = createNativeStackNavigator();
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
+const ErrorFallback = (props: { error: Error, resetError: Function }) => (
+    <View style={styles.container}>
+        <Text style={styles.title}> Oups ...</Text>
+        <Text style={styles.text}>Une erreur est survenue: cela peut-être dû au réseau où à l'appel du serveur, veuillez contacter administration.chat@yumail.eu</Text>
+        <Text style={styles.text}>{props.error.toString()}</Text>
+        <Text style={styles.buttonReset} onPress={() => props.resetError()} >Réessayer</Text>
     </View>
-  );
+)
+
+
+export default function Connex() {
+
+    return (
+        <>
+            <ErrorBoundary FallbackComponent={ErrorFallback}>
+                <NavigationContainer>
+                    <Stack.Navigator>
+                        <Stack.Screen name="Inscription" component={Connexion}/>
+                        <Stack.Screen name="Login" component={Login}/>
+                        <Stack.Screen name="Profile" component={Profile}/>
+                        <Stack.Screen name="TcpClient" component={TcpClient}/>
+                        <Stack.Screen name="MessageEchange" component={MessageEchange}/>
+                    </Stack.Navigator>
+                </NavigationContainer>
+                <Toast/>
+            </ErrorBoundary>
+        </>
+    );
 }
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingTop: 10,
+        backgroundColor: '',
+        padding: 8,
+        textAlign: 'center',
+    },
+    title: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    icon: {
+        fontSize: 48
+    },
+    text: {
+        textAlign: 'center',
+        marginVertical: 16
+    },
+    buttonReset: {
+        fontSize: hp(3),
+        backgroundColor: '#A3298B',
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        height: hp(8),
+        width: wp(50),
+        borderRadius: 10,
+        margin: hp(3),
+        color: 'white',
+    }
 });
-
-export default App;
