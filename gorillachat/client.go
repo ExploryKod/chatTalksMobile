@@ -176,7 +176,7 @@ func serveWs(wsServer *WsServer, w http.ResponseWriter, r *http.Request) {
 
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		log.Println(err)
+		log.Println("Problem with upgrader", err)
 		return
 	}
 	client := newClient(conn, wsServer, name[0], roomId[0])

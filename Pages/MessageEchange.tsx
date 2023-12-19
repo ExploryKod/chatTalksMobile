@@ -89,16 +89,21 @@ useEffect(() => {
             let msg = JSON.parse(element);
             console.log('WebSocket msg:', msg.message)
             console.log('WebSocket action:', msg.action)
+            console.log("Websocker SENDER", msg?.sender?.roomId)
 
             if (msg.action &&
                 msg?.action !== "send-message" &&
                 msg?.sender?.name != "" &&
+                msg?.sender?.roomId != "" &&
+                msg?.sender?.roomId !== undefined &&
+                msg?.sender?.roomId === roomId &&
                 msg?.sender?.name != undefined) {
 
                 onMessageAction(msg?.action, msg?.sender?.name);
             }
 
-            if (msg.action && msg?.action === "hub-joined") {
+            if ((msg.action && msg?.action === "hub-joined") &&
+                (msg?.sender?.roomId && msg?.sender?.roomId === roomId)) {
                 onMessageAction(msg?.action, msg?.sender?.name);
             }
 
@@ -110,7 +115,7 @@ useEffect(() => {
                     id: "989996dd-f092-479e-a1b6-192c0a7d19f1",
                     content: sendermessage ? sendermessage : null,
                     username: sendername ? sendername : null,
-                    room_id: roomId ? roomId : null,
+                    room_id: msg?.sender?.roomId ? roomId : null,
                     user_id: null,
                     created_at: null,
 
@@ -220,7 +225,7 @@ return (
         <Text>Message History:</Text>
         <ScrollView>
             {messages
-                .filter((message) => message.action === "send-message" && message.room_id.toString() === roomId.toString())
+                .filter((message) => message.action === "send-message")
                 .map((message, index) => (
                 <View>
                     <Text key={index + Math.random()}>{message.sendermessage}</Text>
