@@ -48,13 +48,6 @@ export default function Parameter() {
             color="#841584"
             accessibilityLabel="Se déconnecter"
         />
-        <Button
-
-            onPress={handleTestDiscussion}
-            title="Salon de discussion - test"
-            color="#841584"
-            accessibilityLabel="salon"
-        />
       </View>
     </Main>
   );
@@ -85,8 +78,7 @@ const style = StyleSheet.create({
     fontSize: hp(2),
     padding: 10,
   },
-  buttonEnvoyer: {
-    backgroundColor: '#A3298B',
+  button: {
     width: wp(20),
     height: hp(8),
     borderRadius: 10,

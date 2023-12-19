@@ -62,6 +62,8 @@ type Client struct {
 
 	Name string `json:"name"`
 
+	RoomId string `json:"roomId"`
+
 	hub *Hub
 
 	// The websocket connection.
@@ -164,6 +166,13 @@ func serveWs(wsServer *WsServer, w http.ResponseWriter, r *http.Request) {
 		log.Println("Url Param 'name' is missing")
 		return
 	}
+
+	roomId, okay := r.URL.Query()["roomId"]
+	if !okay || len(roomId[0]) < 1 {
+        log.Println("Url Param 'roomId' is missing")
+        return
+    }
+
 
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
@@ -302,4 +311,8 @@ func (client *Client) notifyRoomJoined(hub *Hub, sender *Client) {
 
 func (client *Client) GetName() string {
 	return client.Name
+}
+
+func(client *Client) GetRoomId() string {
+    return client.RoomId
 }

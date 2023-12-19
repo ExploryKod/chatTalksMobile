@@ -13,12 +13,16 @@ const RoomCard = ({name, description, id}: IRoom) => {
     const {serverUrl} = useConfig();
     const {token} = useLoggedStore();
     const [image, setImage] = useState<string>("");
-    const queryChat: string = `?id=${id.toString()}&name=${name}&description=${description}`
     const imageUrl = "https://images.pexels.com/photos/3937272/pexels-photo-3937272.jpeg"
     const navigationMessageEchange = useNavigation<openMessageEchange>();
 
     useEffect(() => {
-        setImage(`https://source.unsplash.com/200x200/?${name.split(' ')[0]}`);
+        if(image) {
+            setImage(`https://source.unsplash.com/200x200/?${name.split(' ')[0]}`);
+        } else {
+            setImage(imageUrl);
+        }
+
     }, [image]);
 
 
@@ -35,8 +39,8 @@ const RoomCard = ({name, description, id}: IRoom) => {
             if (response.ok) {
                 const data = await response.json();
                 console.log("chatroom DATA :", data)
-                console.log("ID PROP :", id)
-                navigationMessageEchange.navigate('MessageEchange', { roomId: id, roomName: name, roomDescription: description});
+                console.log("ID PROP type :", typeof id, id)
+                navigationMessageEchange.navigate('MessageEchange', { roomId: id.toString(), roomName: name, roomDescription: description});
             } else {
                 console.log('échec de la réponse chatroom');
                 console.log(response)
@@ -52,7 +56,7 @@ const RoomCard = ({name, description, id}: IRoom) => {
 
             <View style={styles.body}>
                 {image ?
-                    (<ImageBackground source={{uri: image}} style={styles.image}>
+                    (<ImageBackground source={{uri: image }} style={styles.image}>
                         <View style={styles.body__text}>
                             <Text style={styles.name}>{name}</Text>
                         </View>
@@ -129,7 +133,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     description: {
-        align: 'left',
+        TextAlign: 'left',
         padding: 0,
         fontSize: 16,
         color: '#A3298B',

@@ -7,17 +7,18 @@ import type {ISavedMessage, Message} from "../Types/chat";
 
 
 const MessageEchange: React.FC = ({  navigation, route }) => {
-        const { roomId } = route.params || {};
+    const { roomId } = route.params || {};
+    console.log("TYPE ROOMID", typeof roomId)
         // console.log("room id ==> ", route.params.roomId)
     const {serverUrl} = useConfig();
     const {token, username} = useLoggedStore();
-    const socketUrl = `wss://go-chat-docker.onrender.com/ws?name=nass`;
+    // const socketUrl = `wss://go-chat-docker.onrender.com/ws?name=nass`;
     const [ws, setWs] = useState<WebSocket | null>(null);
     const [serverResponse, setServerResponse] = useState<string>('');
     const [messageInput, setMessageInput] = useState<Message>({
         action: "send-message",
-        message: "bienvenue",
-        target: {id: "989996dd-f092-479e-a1b6-192c0a7d19f1", name: "1"}
+        message: "",
+        target: {id: "989996dd-f092-479e-a1b6-192c0a7d19f1", name: roomId ? roomId : null}
     });
 
     const [messageHistory, setMessageHistory] = useState<string[]>([]);
@@ -26,7 +27,6 @@ const MessageEchange: React.FC = ({  navigation, route }) => {
     const [sendername, setSendername] = useState<string>('')
     const [sendermessage, setSendermessage] = useState<string>('')
     const [action, setAction] = useState<string>('')
-
 
     const handleJoinRoom = () => {
         if(!ws) {
@@ -53,7 +53,7 @@ const MessageEchange: React.FC = ({  navigation, route }) => {
             message: text,
             target: {
                 id: "989996dd-f092-479e-a1b6-192c0a7d19f1",
-                name: "1"
+                name: roomId ? roomId : null
             }
         })
         setMessageInput((prevState) => {
@@ -63,7 +63,7 @@ const MessageEchange: React.FC = ({  navigation, route }) => {
 
         setSendername(username)
         setSendermessage(text)
-        setAction('message-saved')
+        setAction('send-message')
     }
 
 
@@ -108,9 +108,9 @@ useEffect(() => {
                     sendermessage: msg?.message,
                     action: msg?.action,
                     id: "989996dd-f092-479e-a1b6-192c0a7d19f1",
-                    content: null,
-                    username: null,
-                    room_id: roomId,
+                    content: sendermessage ? sendermessage : null,
+                    username: sendername ? sendername : null,
+                    room_id: roomId ? roomId : null,
                     user_id: null,
                     created_at: null,
 
@@ -139,11 +139,11 @@ useEffect(() => {
 const sendMessage = () => {
     console.log('sendmessage')
     if (!ws || !messageInput) {
+        console.log('!ws', '!message')
         return;
     }
-    console.log('!ws', '!message')
+
     if (messageInput.message === '') {
-        console.log(messageInput)
         Toast.show({type: 'error', text1: 'Veuillez écrire un message'});
         return;
     }
@@ -201,7 +201,10 @@ const onMessageAction = (action: string, personName: string) => {
     }
 }
 
-console.log("messages =======> ", messages)
+
+console.log("messages =======> ", messages.filter((message) => message.action === "send-message"))
+
+
 // console.log("Message Input ==> :", messageInput);
 return (
     <View>
@@ -212,16 +215,15 @@ return (
             value={messageInput.message}
             onChangeText={(text) => handleMessageChange(text)}
         />
-        <Button title="Send Message" onPress={sendMessage}/>
+        <Button title="Envoyer" onPress={sendMessage}/>
         <Text>Server Response: {serverResponse}</Text>
         <Text>Message History:</Text>
         <ScrollView>
             {messages
-                .filter((message) =>
-                    (message.room_id && message.room_id === roomId) && message.action === "send-message")
+                .filter((message) => message.action === "send-message" && message.room_id.toString() === roomId.toString())
                 .map((message, index) => (
                 <View>
-                    <Text key={index}>{message.sendermessage}</Text>
+                    <Text key={index + Math.random()}>{message.sendermessage}</Text>
                 </View>
             ))}
         </ScrollView>
