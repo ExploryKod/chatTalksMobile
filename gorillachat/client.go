@@ -77,7 +77,7 @@ type Client struct {
 	wsServer *WsServer
 }
 
-func newClient(conn *websocket.Conn, wsServer *WsServer, name string) *Client {
+func newClient(conn *websocket.Conn, wsServer *WsServer, name string, roomId string) *Client {
 	return &Client{
 		ID:       uuid.New(),
 		conn:     conn,
@@ -85,6 +85,7 @@ func newClient(conn *websocket.Conn, wsServer *WsServer, name string) *Client {
 		hubs:     make(map[*Hub]bool),
 		wsServer: wsServer,
 		Name:     name,
+		RoomId:   roomId,
 	}
 }
 
@@ -169,17 +170,16 @@ func serveWs(wsServer *WsServer, w http.ResponseWriter, r *http.Request) {
 
 	roomId, okay := r.URL.Query()["roomId"]
 	if !okay || len(roomId[0]) < 1 {
-        log.Println("Url Param 'roomId' is missing")
-        return
-    }
-
+		log.Println("Url Param 'roomId' is missing")
+		return
+	}
 
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	client := newClient(conn, wsServer, name[0])
+	client := newClient(conn, wsServer, name[0], roomId[0])
 
 	go client.writePump()
 	go client.readPump()
@@ -313,6 +313,6 @@ func (client *Client) GetName() string {
 	return client.Name
 }
 
-func(client *Client) GetRoomId() string {
-    return client.RoomId
+func (client *Client) GetRoomId() string {
+	return client.RoomId
 }
