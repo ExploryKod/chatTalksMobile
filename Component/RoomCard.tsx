@@ -13,14 +13,15 @@ const RoomCard = ({name, description, id}: IRoom) => {
     const {serverUrl} = useConfig();
     const {token} = useLoggedStore();
     const [image, setImage] = useState<string>("");
-    const imageUrl = "https://images.pexels.com/photos/3937272/pexels-photo-3937272.jpeg"
+    // const imageUrl = "https://images.pexels.com/photos/3937272/pexels-photo-3937272.jpeg"
     const navigationMessageEchange = useNavigation<openMessageEchange>();
 
     useEffect(() => {
         if(image) {
             setImage(`https://source.unsplash.com/200x200/?${name.split(' ')[0]}`);
         } else {
-            setImage(imageUrl);
+            // setImage(imageUrl);
+            setImage(`https://source.unsplash.com/200x200/?chatroom`);
         }
 
     }, [image]);
@@ -40,7 +41,7 @@ const RoomCard = ({name, description, id}: IRoom) => {
                 const data = await response.json();
                 console.log("chatroom DATA :", data)
                 console.log("ID PROP type :", typeof id, id)
-                navigationMessageEchange.navigate('MessageEchange', { roomId: id.toString(), roomName: name, roomDescription: description});
+                navigationMessageEchange.navigate('MessageEchange', { roomId: id.toString(), roomName: name, roomDescription: description} as any);
             } else {
                 console.log('échec de la réponse chatroom');
                 console.log(response)
@@ -88,7 +89,7 @@ const RoomCard = ({name, description, id}: IRoom) => {
 const styles = StyleSheet.create({
     container: {
         width: '90%',
-        boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
+        boxShadow: "0 0 10px rgba(0, 0, 0, 0.5)",
         backgroundColor: '#F2F3F7',
         paddingTop: 20,
         paddingBottom: 20,
@@ -133,7 +134,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     description: {
-        TextAlign: 'left',
+        textAlign: 'left',
         padding: 0,
         fontSize: 16,
         color: '#A3298B',

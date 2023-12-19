@@ -74,8 +74,7 @@ export default function Login() {
         console.log('réponse bien reçu');
         const data = await response.json();
         if(data.token) {
-          console.log("data ====>", data)
-          console.log('token bien reçu ====>', data.token)
+          console.log('token bien reçu, full data ==>', data)
           setIsLoading(false);
           setToken(data.token);
           setUsername(data.username);
