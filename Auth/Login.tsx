@@ -1,5 +1,5 @@
-import { StyleSheet, TextInput, View, Text } from "react-native";
-import Main from "../Component/Main";
+import {StyleSheet, TextInput, View, Text, Image} from "react-native";
+import Main from "../Component/Main.tsx";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -8,10 +8,10 @@ import { useState } from "react";
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import {useLoggedStore} from "../StateManager/userStore";
+import {useLoggedStore} from "../StateManager/userStore.ts";
 import Toast from 'react-native-toast-message';
 import React from "react";
-import {useConfig} from "../Hook/useConfig";
+import {useConfig} from "../Hook/useConfig.tsx";
 
 //const {height, width} = Dimensions.get('window');
 
@@ -116,6 +116,17 @@ export default function Login() {
 
   return (
     <Main styles={style.disposition}>
+      <View style={style.imageContainer}>
+        <Image
+            style={{
+              resizeMode: 'cover',
+              height: 100,
+              width: 100,
+              tintColor: '#A3298B'
+            }}
+            source={require('./assets/black-cat.png')}
+        />
+      </View>
       <View style={style.composantInput}>
         <TextInput
           keyboardType="default"
@@ -165,7 +176,13 @@ const style = StyleSheet.create({
     gap: wp(30),
     backgroundColor: '#161C3D',
   },
-
+  imageContainer : {
+    width: wp(100),
+    alignItems: 'flex-start',
+    marginTop: hp(10),
+    marginBottom: -155,
+    paddingLeft: 10,
+  },
   inputProp: {
     width: wp(85),
     height: hp(8),
@@ -175,6 +192,7 @@ const style = StyleSheet.create({
     margin: hp(1.5),
     padding: 10,
   },
+
 
   buttonLogin: {
     fontSize: hp(3),

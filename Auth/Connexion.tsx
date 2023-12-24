@@ -170,7 +170,7 @@ const style = StyleSheet.create({
     alignItems: 'flex-start',
     marginTop: hp(10),
     marginBottom: -30,
-    paddingLeft: 200,
+    paddingLeft: 10,
   },
   disposition: {
     flex: 1,

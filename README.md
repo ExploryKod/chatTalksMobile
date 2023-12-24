@@ -1,72 +1,97 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Chat Talks - Version mobile
 
-# Getting Started
+## Objectifs et présentation du projet
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+Dans le cadre du cours "Solutions Front" de Hetic en 3ème année du bachelor Web, nous devons créer une application de chat.<br>
 
-## Step 1: Start the Metro Server
+Cette application se divise en trois parties: 
+- Une application mobile réalisé avec React Native
+- Une application web réalisé avec React Js
+- Une API réalisé avec Goland et notamment gorilla websocket
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+Ici vous êtes sur le repo de l'application mobile: 
+- Le dossier "chattalksapp" contient le code de l'application mobile en React Native et inclu le code de l'api (Goland).
+- Le sous-dossier "gorilla" contient le code de l'API afin de faciliter le déploiement local de l'application mobile.
 
-To start Metro, run the following command from the _root_ of your React Native project:
+Il n'y a pas à ce stade de version en production pour l'application mobile, il faut donc installer les composant en local pour la faire fonctionner.
+Nous allons vous guider dans cette installation.
+
+
+[**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+
+## Installation locale
+
+>**Note**: Vous devez avoir installé React Native et le nécessaire en suivant les étapes sur ce lien: 
+> [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) 
+> Choisissez l'option **"React CLI"** avec votre OS et la plateforme **Android**.
+
+>**Note**: Vous devez aussi avoir installé Go et le nécessaire en suivant les étapes sur ce lien: [Go - Getting Started](https://golang.org/doc/install)
+
+Avant de procéder, verifiez que vous avez bien installé un voir deux émulateurs pour appareils Android. 
+En installant deux émulateurs, vous pourrez tester le chat.
+
+### Start the Metro Server
+
+Aller à la racine du projet là où se trouve le package.json et lancer la commande suivante:
 
 ```bash
 # using npm
 npm start
-
-# OR using Yarn
-yarn start
 ```
 
-## Step 2: Start your Application
+Vous avez maintenant lancé le serveur Metro qui va permettre de faire fonctionner l'application. 
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+### Etape 2: lancer l'api (Goland)
 
-### For Android
+Ouvrez un terminal et placez-vous dans le dossier "gorilla" où il y a le fichier main.go.
+
+Lancer la commande suivante pour lancer l'api:
+
+```bash
+ go run .
+```
+
+Aller sur localhost:8000 et vérifiez que vous arrivez sur une page 404 ou une page d'accueil de l'api (si celle-ci a été intégré). 
+Si oui c'est que l'api est lancée.
+
+Si vous avez une erreur, il se peut que celle-ci soit liée à une connexion à la base de donnée. 
+Vous pouvez changer les élèments de connexion à la BDD dans sa configuration dans main.go.
+
+### Etape 3: lancer l'application
+
+Ouvrez un second terminal, toujours à la racine du projet et lancer cette commande pour ouvrir votre app _Android_ :
 
 ```bash
 # using npm
 npm run android
-
-# OR using Yarn
-yarn android
 ```
 
-### For iOS
+>La première fois il se peut que vous deviez attendre longtemps et donc n'hésitez pas à prendre une pause pendant le téléchargement des packages.
 
-```bash
-# using npm
-npm run ios
+>En fin de process vous devez avoir le ou les émulateurs qui s'ouvrent automatiquement. 
 
-# OR using Yarn
-yarn ios
-```
+>**Note**: Si vous avez deux émulateurs, vous connectez-vous avec deux comptes différents pour tester le chat.
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+## Etape 4 : Usage de l'application
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+Une fois l'émulateur lancé, vous arrivez sur la page de connexion. 
+Vous pouvez créer votre compte ou utiliser un compte existant car la base de donnée est en ligne et non locale.
 
-## Step 3: Modifying your App
+Vous trouvez l'adresse et autres élèments de connexion à la base de donnée dans l'api en Go et dans le fichier main.go <br>
+Si besoin ou si la base de donnée en ligne est défaillante vous pouvez changer ces élèments pour vous connecter à votre propre base de donnée.<br>
 
-Now that you have successfully run the app, let's modify it.
+Vous pouvez ensuite accéder à un salon et discuter avec l'autre utilisateur sur l'autre émulateur localement, vous discuterez donc avec vous-même pour le test.<br> 
+Ceci n'a pas énormément de sens mais cela peut permettre de tester l'application.
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+## Apartés
 
-## Congratulations! :tada:
+- Si vous voulez ajouter ce code dans une application existante, consultez [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
+- Si vous voulez en savoir plus sur React Native, consultez: [Introduction to React Native](https://reactnative.dev/docs/getting-started).
 
-You've successfully run and modified your React Native App. :partying_face:
+## Troubleshooting
 
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+Si vous avez des problèmes avec l'installation, vous pouvez consulter cette page: [Troubleshooting](https://reactnative.dev/docs/troubleshooting).
 
 # Learn More
 

@@ -39,7 +39,7 @@ export const useLoggedStore = create<LoggedState>((set) => {
         username,
         admin,
         setToken: async (token: string) => {
-            await Keychain.setGenericPassword('myUsername', token, { service: 'token' });
+            await Keychain.setGenericPassword('myToken', token, { service: 'token' });
             set({ token: token });
         },
         removeToken: async () => {
@@ -55,7 +55,7 @@ export const useLoggedStore = create<LoggedState>((set) => {
             set({ username: '' });
         },
         setAdminStatus: async (admin: string) => {
-            await Keychain.setGenericPassword('myUsername', admin, { service: 'admin' });
+            await Keychain.setGenericPassword('myAdmin', admin, { service: 'admin' });
             set({ admin: admin });
         },
         removeAdminStatus: async () => {

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TextInput, Button, ScrollView} from 'react-native';
+import {View, Text, TextInput, Button, ScrollView, StyleSheet} from 'react-native';
 import {useConfig} from "../Hook/useConfig";
 import {useLoggedStore} from "../StateManager/userStore";
 import Toast from "react-native-toast-message";
@@ -8,8 +8,6 @@ import type {ISavedMessage, Message} from "../Types/chat";
 
 const MessageEchange: React.FC = ({  navigation, route }) => {
     const { roomId } = route.params || {};
-    console.log("TYPE ROOMID", typeof roomId)
-        // console.log("room id ==> ", route.params.roomId)
     const {serverUrl} = useConfig();
     const {token, username} = useLoggedStore();
     // const socketUrl = `wss://go-chat-docker.onrender.com/ws?name=nass`;
@@ -216,7 +214,7 @@ return (
         <Text>TCP Client Example {roomId}</Text>
         {/*<Button title="Connect to Server" onPress={connectWebSocket}/>*/}
         <TextInput
-            placeholder="Enter message"
+            placeholder="Ecrivez ici"
             value={messageInput.message}
             onChangeText={(text) => handleMessageChange(text)}
         />
@@ -227,15 +225,52 @@ return (
             {messages
                 .filter((message) => message.action === "send-message")
                 .map((message, index) => (
-                <View>
-                    <Text key={index + Math.random()}>{message.sendermessage}</Text>
+                <View key={index + Math.random()} style={message.sendername === "nass" ? style.bubbleLeft : style.bubbleRight}>
+                    <View style={style.bubbleMessage}>
+                        <Text>{message.sendermessage}</Text>
+                    </View>
+                    <View style={style.bubbleUsername}>
+                        <Text>{message.sendername}</Text>
+                    </View>
                 </View>
+
             ))}
         </ScrollView>
     </View>
 );
 
-}
-;
+};
 
 export default MessageEchange;
+
+const style = StyleSheet.create({
+    bubbleLeft : {
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+        margin: 10,
+    },
+    bubbleRight : {
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        margin: 10,
+    },
+    bubbleMessage: {
+        backgroundColor: '#A6A8C9',
+        padding: 10,
+        borderRadius: 20,
+        borderTopLeftRadius: 0,
+    },
+    bubbleUsername: {
+        marginTop: 2,
+        padding: 5,
+        fontSize: 10,
+        color: '#999',
+    }
+
+})
