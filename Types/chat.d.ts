@@ -2,7 +2,7 @@ declare module 'react-native-websocket';
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 
 export interface IRoom {
-    id: number;
+    id: string;
     name: string;
     description: string;
 }
@@ -36,11 +36,13 @@ export interface ISavedMessage extends SenderMessage {
     content: string | null;
 }
 
-export interface MessageInput {
+export type Target = {
+    id: string;
+    name: string|undefined;
+}
+
+export type Message = {
     action: string;
     message: string;
-    target: {
-        id: string;
-        name: string;
-    };
+    target: Target;
 }

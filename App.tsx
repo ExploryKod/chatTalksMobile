@@ -2,14 +2,13 @@ import React from 'react';
 import Connexion from './Auth/Connexion';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Login from './Pages/Login';
+import Login from './Auth/Login.tsx';
 import Profile from './Pages/Profile';
-import MessageEchange from './Pages/MessageExchange';
-import TcpClient from "./Pages/TcpClient";
+import ErrorBoundary from 'react-native-error-boundary';
+import { StyleSheet, Text, View } from "react-native";
 import Toast from 'react-native-toast-message';
-import ErrorBoundary from 'react-native-error-boundary'
-import { StyleSheet, Text, View} from "react-native";
-import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
+import MessageEchange from './Pages/MessageEchange';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 const Stack = createNativeStackNavigator();
 
@@ -23,7 +22,6 @@ const ErrorFallback = (props: { error: Error, resetError: Function }) => (
 )
 
 
-
 export default function Connex() {
 
     return (
@@ -31,10 +29,9 @@ export default function Connex() {
             <ErrorBoundary FallbackComponent={ErrorFallback}>
                 <NavigationContainer>
                     <Stack.Navigator>
-                        <Stack.Screen name="Inscription" component={Connexion}/>
                         <Stack.Screen name="Login" component={Login}/>
+                        <Stack.Screen name="Inscription" component={Connexion}/>
                         <Stack.Screen name="Profile" component={Profile}/>
-                        <Stack.Screen name="TcpClient" component={TcpClient}/>
                         <Stack.Screen name="MessageEchange" component={MessageEchange}/>
                     </Stack.Navigator>
                 </NavigationContainer>

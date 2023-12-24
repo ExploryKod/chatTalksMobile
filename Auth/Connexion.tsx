@@ -102,7 +102,7 @@ function Connexion() {
               resizeMode: 'cover',
               height: 100,
               width: 100,
-              tintColor: "#4E78A2E63"
+              tintColor: '#A3298B'
             }}
             source={require('./assets/black-cat.png')}
         />
@@ -170,7 +170,7 @@ const style = StyleSheet.create({
     alignItems: 'flex-start',
     marginTop: hp(10),
     marginBottom: -30,
-    paddingLeft: 200,
+    paddingLeft: 10,
   },
   disposition: {
     flex: 1,

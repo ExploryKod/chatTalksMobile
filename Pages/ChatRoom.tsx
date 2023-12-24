@@ -6,8 +6,6 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import useGetData from "../Hook/useGetData";
-import {useNavigation} from "@react-navigation/native";
-import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import {useState} from "react";
 import RoomCard from "../Component/RoomCard";
 import {IRoom} from "../Types/chat";
@@ -43,7 +41,7 @@ export default function ChatRoom() {
           const data = await response.json();
           console.log("data",data)
           if(data.id && data.name && data.description) {
-            const newRoom ={id: data.id, name: data.name, description: data.description} as IRoom;
+            const newRoom ={id: data.id.toString(), name: data.name, description: data.description} as IRoom;
             console.log('new room created', newRoom)
              // setRoomsList([...roomsList, newRoom]);
           } else {
@@ -70,12 +68,14 @@ export default function ChatRoom() {
   };
 
   const { data } = useGetData(`${serverUrl}/chat/rooms`);
-  console.log(data);
+  console.log("rooms", data);
   return (
     <Main styles={style.disposition}>
         <ScrollView style={style.containerRooms}>
-            {data?.map((room: IRoom) => (
-              <RoomCard name={room.name} description={room.description} id={room.id} />
+            {data?.map((room: IRoom, index) => (
+                <View key={index}>
+                  <RoomCard name={room.name} description={room.description} id={room.id.toString()} />
+                </View>
             ))}
         </ScrollView>
       <View style={style.separator}></View>
