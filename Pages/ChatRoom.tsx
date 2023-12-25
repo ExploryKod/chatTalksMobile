@@ -30,7 +30,20 @@ export default function ChatRoom() {
       setRoomList(data);
     }
   }, [data]);
+
   const createRoom = async () => {
+
+    if(inputName.length > 30) {
+      setModalVisible(!modalVisible)
+      Toast.show({type: 'error', text1: `Le nom de la salle ne doit pas dépasser 30 caractères`});
+      return;
+    }
+
+    if(inputTheme.length > 50) {
+        setModalVisible(!modalVisible)
+        Toast.show({type: 'error', text1: `Le thème de la salle ne doit pas dépasser 50 caractères`});
+        return;
+    }
 
     if (inputName !== '' && inputTheme !== '') {
       try {
@@ -52,19 +65,34 @@ export default function ChatRoom() {
           if(data.id && data.name && data.description) {
             const newRoom ={id: data.id, name: data.name, description: data.description} as IRoom;
             setRoomList([...roomList, newRoom]);
+            setInputName("")
+            setInputTheme("")
             setModalVisible(!modalVisible);
             Toast.show({type: 'success', text1: `La salle ${data.name} a été créé`});
           } else {
+            setModalVisible(!modalVisible)
+            setInputName("")
+            setInputTheme("")
             Toast.show({type: 'error', text1: `Echec de votre requête: élèments manquants`});
           }
         } else {
+          setModalVisible(!modalVisible)
+          setInputName("")
+          setInputTheme("")
           Toast.show({type: 'error', text1: `Echec de votre requête: la salle n'a pu être créé`});
+          Toast.show({type: 'error', text1: `${data.message}`});
         }
 
       } catch (error) {
+        setModalVisible(!modalVisible)
+        setInputName("")
+        setInputTheme("")
         Toast.show({type: 'error', text1: `Echec de votre requête: la salle n'a pu être créé`});
       }
     }else{
+      setModalVisible(!modalVisible)
+      setInputName("")
+      setInputTheme("")
       Toast.show({type: 'error', text1: `Êtes-vous sûr d'avoir rempli tous les champs ?`});
     }
   };
@@ -116,7 +144,7 @@ export default function ChatRoom() {
                     onChangeText={(text) => handleChangeTheme(text)}
                     style={style.inputProp}
                     placeholderTextColor="black"
-                    placeholder="Thème"
+                    placeholder="Thème du chat"
                 />
                 <Pressable
                     onPress={createRoom}
@@ -189,7 +217,7 @@ const style = StyleSheet.create({
   },
   modalView: {
     width: "100%",
-    height: "50%",
+    height: "103%",
     margin: 0,
     backgroundColor: 'white',
     borderRadius: 0,

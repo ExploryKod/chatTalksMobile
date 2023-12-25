@@ -1,9 +1,11 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {View, Text, TextInput, Button, ScrollView, StyleSheet} from 'react-native';
+import {View, Text, TextInput, Button, ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
 import {useConfig} from "../Hook/useConfig";
 import {useLoggedStore} from "../StateManager/userStore";
 import Toast from "react-native-toast-message";
 import type {ISavedMessage, Message} from "../Types/chat";
+import { COLORS } from "../Styles/constants.tsx";
+import { SendHorizontal } from 'lucide-react-native';
 
 
 const MessageEchange: React.FC = ({  navigation, route }: any) => {
@@ -216,33 +218,32 @@ console.log("messages =======> ", messages.filter((message) => message.action ==
 
 // console.log("Message Input ==> :", messageInput);
 return (
-    <View>
-        <Text>TCP Client Example {roomId}</Text>
+    <View style={style.messageContainer}>
         {/*<Button title="Connect to Server" onPress={connectWebSocket}/>*/}
-
-        <Text>Server Response: {serverResponse}</Text>
-        <Text>Message History:</Text>
         <ScrollView ref={scrollViewRef as React.RefObject<ScrollView>} onContentSizeChange={() => scrollViewRef.current?.scrollToEnd()}>
             {messages
                 .filter((message) => message.action === "send-message")
                 .map((message, index) => (
-                <View key={index} style={message.sendername === "nass" ? style.bubbleLeft : style.bubbleRight}>
-                    <View style={style.bubbleMessage}>
-                        <Text>{message.sendermessage}</Text>
-                    </View>
+                <View key={index} style={message.sendername === "nass" ? style.bubbleUser : style.bubbleOther}>
                     <View style={style.bubbleUsername}>
-                        <Text>{message.sendername}</Text>
+                        <Text style={message.sendername === "nass" ? {color: COLORS.darkBlue} : {color: COLORS.darkpink}}>{message.sendername}</Text>
+                    </View>
+                    <View style={message.sendername === "nass" ? style.bubbleMessageUser : style.bubbleMessageOther}>
+                        <Text style={{color: COLORS.lightLavender}}>{message.sendermessage}</Text>
                     </View>
                 </View>
-
             ))}
         </ScrollView>
-        <TextInput
-            placeholder="Ecrivez ici"
-            value={messageInput.message}
-            onChangeText={(text) => handleMessageChange(text)}
-        />
-        <Button title="Envoyer" onPress={sendMessage}/>
+        <View style={style.messageForm}>
+            <TextInput
+                placeholder="Ecrivez ici"
+                value={messageInput.message}
+                onChangeText={(text) => handleMessageChange(text)}
+            />
+            <TouchableOpacity onPress={sendMessage} style={style.sendMessageBtn}>
+                <SendHorizontal color={COLORS.darkBlue} height={50} width={30} />
+            </TouchableOpacity>
+        </View>
     </View>
 );
 
@@ -251,33 +252,61 @@ return (
 export default MessageEchange;
 
 const style = StyleSheet.create({
-    bubbleLeft : {
+    messageContainer: {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        backgroundColor: COLORS.darkLavender,
+    },
+    bubbleOther : {
+        maxWidth: '45%',
+        margin: 10,
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'flex-end',
-        margin: 10,
     },
-    bubbleRight : {
+    bubbleUser : {
+        maxWidth: '45%',
+        margin: 10,
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'flex-start',
-        margin: 10,
     },
-    bubbleMessage: {
-        backgroundColor: '#A6A8C9',
+    bubbleMessageUser: {
+        minWidth: 100,
         padding: 10,
         borderRadius: 20,
         borderTopLeftRadius: 0,
+        backgroundColor: COLORS.darkpink,
+    },
+    bubbleMessageOther: {
+        minWidth: 100,
+        padding: 10,
+        borderRadius: 20,
+        borderTopLeftRadius: 0,
+        backgroundColor: COLORS.darkBlue,
     },
     bubbleUsername: {
         marginTop: 2,
         padding: 5,
         fontSize: 10,
         color: '#999',
-    }
-
+    },
+    messageForm: {
+        minHeight: 50,
+        position: 'relative',
+        display: "flex",
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: COLORS.lightLavender,
+    },
+    sendMessageBtn: {
+        padding: 10,
+        backgroundColor: 'transparent'
+    },
 })
