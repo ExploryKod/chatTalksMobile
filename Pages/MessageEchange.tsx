@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {View, Text, TextInput, Button, ScrollView, StyleSheet} from 'react-native';
 import {useConfig} from "../Hook/useConfig";
 import {useLoggedStore} from "../StateManager/userStore";
@@ -6,7 +6,7 @@ import Toast from "react-native-toast-message";
 import type {ISavedMessage, Message} from "../Types/chat";
 
 
-const MessageEchange: React.FC = ({  navigation, route }) => {
+const MessageEchange: React.FC = ({  navigation, route }: any) => {
     const { roomId } = route.params || {};
     const {serverUrl} = useConfig();
     const {token, username} = useLoggedStore();
@@ -25,6 +25,7 @@ const MessageEchange: React.FC = ({  navigation, route }) => {
     const [sendername, setSendername] = useState<string>('')
     const [sendermessage, setSendermessage] = useState<string>('')
     const [action, setAction] = useState<string>('')
+    const scrollViewRef = useRef<ScrollView>(null);
 
     const handleJoinRoom = () => {
         if(!ws) {
@@ -153,6 +154,11 @@ const sendMessage = () => {
     console.log('messageInput.message')
     ws.send(JSON.stringify(messageInput));
     console.log('messageInput', messageInput)
+    if(scrollViewRef.current) {
+        scrollViewRef.current.scrollToEnd({ animated: true });
+
+    }
+
     setMessageInput({
         action: "send-message",
         message: "",
@@ -213,19 +219,14 @@ return (
     <View>
         <Text>TCP Client Example {roomId}</Text>
         {/*<Button title="Connect to Server" onPress={connectWebSocket}/>*/}
-        <TextInput
-            placeholder="Ecrivez ici"
-            value={messageInput.message}
-            onChangeText={(text) => handleMessageChange(text)}
-        />
-        <Button title="Envoyer" onPress={sendMessage}/>
+
         <Text>Server Response: {serverResponse}</Text>
         <Text>Message History:</Text>
-        <ScrollView>
+        <ScrollView ref={scrollViewRef as React.RefObject<ScrollView>} onContentSizeChange={() => scrollViewRef.current?.scrollToEnd()}>
             {messages
                 .filter((message) => message.action === "send-message")
                 .map((message, index) => (
-                <View key={index + Math.random()} style={message.sendername === "nass" ? style.bubbleLeft : style.bubbleRight}>
+                <View key={index} style={message.sendername === "nass" ? style.bubbleLeft : style.bubbleRight}>
                     <View style={style.bubbleMessage}>
                         <Text>{message.sendermessage}</Text>
                     </View>
@@ -236,6 +237,12 @@ return (
 
             ))}
         </ScrollView>
+        <TextInput
+            placeholder="Ecrivez ici"
+            value={messageInput.message}
+            onChangeText={(text) => handleMessageChange(text)}
+        />
+        <Button title="Envoyer" onPress={sendMessage}/>
     </View>
 );
 
