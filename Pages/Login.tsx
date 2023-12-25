@@ -13,8 +13,6 @@ import Toast from 'react-native-toast-message';
 import React from "react";
 import {useConfig} from "../Hook/useConfig";
 
-//const {height, width} = Dimensions.get('window');
-
 export type RootFromProfile = {
   Profile: undefined;
   Inscription: undefined;

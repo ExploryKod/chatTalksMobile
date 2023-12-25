@@ -15,7 +15,7 @@ export interface IWordLength {
 }
 
 type RootFromMessageEchange = {
-    MessageEchange: undefined;
+    Salle: undefined | {roomId: string, roomName: string, roomDescription: string};
     ChatRoom: undefined;
 };
 

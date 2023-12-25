@@ -1,12 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {View, Image, Text, TouchableOpacity, StyleSheet, ImageBackground} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, ImageBackground} from 'react-native';
 import {IRoom} from '../Types/chat';
 import {useConfig} from '../Hook/useConfig';
 import {useLoggedStore} from "../StateManager/userStore";
 import {useNavigation} from "@react-navigation/native";
-import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import type {openMessageEchange} from "../Types/chat";
-import * as url from "url";
 
 const RoomCard = ({name, description, id}: IRoom) => {
 
@@ -38,9 +36,7 @@ const RoomCard = ({name, description, id}: IRoom) => {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log("chatroom DATA :", data)
-                console.log("ID PROP type :", typeof id, id)
-                navigationMessageEchange.navigate('MessageEchange', { roomId: id.toString(), roomName: name, roomDescription: description});
+                navigationMessageEchange.navigate('Salle', { roomId: id.toString(), roomName: name, roomDescription: description});
             } else {
                 console.log('échec de la réponse chatroom');
                 console.log(response)
@@ -88,7 +84,6 @@ const RoomCard = ({name, description, id}: IRoom) => {
 const styles = StyleSheet.create({
     container: {
         width: '90%',
-        boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
         backgroundColor: '#F2F3F7',
         paddingTop: 20,
         paddingBottom: 20,
@@ -133,7 +128,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     description: {
-        TextAlign: 'left',
+        textAlign: 'left',
         padding: 0,
         fontSize: 16,
         color: '#A3298B',

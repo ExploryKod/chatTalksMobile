@@ -32,7 +32,7 @@ export default function Connex() {
                         <Stack.Screen name="Login" component={Login}/>
                         <Stack.Screen name="Inscription" component={Connexion}/>
                         <Stack.Screen name="Profile" component={Profile}/>
-                        <Stack.Screen name="MessageEchange" component={MessageEchange}/>
+                        <Stack.Screen name="Salle" component={MessageEchange}/>
                     </Stack.Navigator>
                 </NavigationContainer>
                 <Toast/>
