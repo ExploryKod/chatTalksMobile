@@ -18,6 +18,7 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useConfig} from '../Hook/useConfig.tsx';
 import {useLoggedStore} from '../StateManager/userStore.ts';
 import {IDiscussion} from '../Types/discussions';
+import {COLORS} from "../Styles/constants.tsx";
 
 type RootFromMessageEchange = {
   Salle: undefined;
@@ -90,12 +91,13 @@ export default function ListDiscussion() {
     <Main styles={style.disposition}>
       {dataDiscussion.map(discussion => (
         <TouchableOpacity
+            style={style.discussionContainer}
           key={discussion.room.id}
           onPress={() => handleClick(discussion)}>
           <Discussion styles={style.discussionStyle}>
             <View style={style.imageContainer}>
               <ImageBackground
-                style={{width: 100, height: 100, borderRadius: 100 / 2}}
+                style={{width: 50, height: 50, borderRadius: 50 / 2}}
                 source={{
                   uri: `${image}`,
                 }}
@@ -138,23 +140,28 @@ export default function ListDiscussion() {
 }
 
 const style = StyleSheet.create({
-  imageContainer: {
-    width: 50,
-    height: 50,
-    borderRadius: 1000,
-  },
-
-  discussionStyle: {
-    margin: hp(0.2),
-    backgroundColor: '#dcdcdc',
-    flexDirection: 'row',
-    gap: hp(1),
-    alignItems: 'center',
-    padding: hp(0.5),
-  },
-
   disposition: {
     flexDirection: 'column',
     backgroundColor: 'white',
+  },
+  discussionContainer: {
+    minWidth: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    gap: 5,
+  },
+  imageContainer: {
+    width: 50,
+    height: 50,
+  },
+  discussionStyle: {
+    minWidth: '100%',
+    margin: 2,
+    backgroundColor: COLORS.darkLavender,
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 10,
+    padding: 10,
   },
 });
