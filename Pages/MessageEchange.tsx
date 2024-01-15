@@ -66,9 +66,9 @@ const MessageEchange: React.FC = ({  navigation, route }) => {
 
 
 useEffect(() => {
-
+    console.log('usernameNASS', username)
     // const newWs = new WebSocket('ws://10.0.2.2:9090/ws');
-    const newWs = new WebSocket(`ws://10.0.2.2:8000/ws?name=nass&roomId=${roomId ? roomId : "0"}`);
+    const newWs = new WebSocket(`ws://10.0.2.2:8000/ws?name=${username}&roomId=${roomId ? roomId : "0"}`);
     // const newWs = new WebSocket(`wss://go-chat-docker.onrender.com/ws?name=nass`);
 
     newWs.onopen = () => {
@@ -211,8 +211,7 @@ console.log("messages =======> ", messages.filter((message) => message.action ==
 // console.log("Message Input ==> :", messageInput);
 return (
     <View>
-        <Text>TCP Client Example {roomId}</Text>
-        {/*<Button title="Connect to Server" onPress={connectWebSocket}/>*/}
+        <Text>Room: {roomId}</Text>
         <TextInput
             placeholder="Ecrivez ici"
             value={messageInput.message}
@@ -225,8 +224,8 @@ return (
             {messages
                 .filter((message) => message.action === "send-message")
                 .map((message, index) => (
-                <View key={index + Math.random()} style={message.sendername === "nass" ? style.bubbleLeft : style.bubbleRight}>
-                    <View style={style.bubbleMessage}>
+                <View key={index + Math.random()} style={message.sendername === username ? style.bubbleLeft : style.bubbleRight }>
+                    <View style={message.sendername === username ? style.bubbleMessageLeft : style.bubbleMessageRight}>
                         <Text>{message.sendermessage}</Text>
                     </View>
                     <View style={style.bubbleUsername}>
@@ -249,7 +248,7 @@ const style = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'flex-end',
+        alignItems: 'flex-start',
         margin: 10,
     },
     bubbleRight : {
@@ -257,11 +256,17 @@ const style = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'flex-start',
+        alignItems: 'flex-end',
         margin: 10,
     },
-    bubbleMessage: {
+    bubbleMessageRight: {
         backgroundColor: '#A6A8C9',
+        padding: 10,
+        borderRadius: 20,
+        borderTopRightRadius: 0,
+    },
+    bubbleMessageLeft: {
+        backgroundColor: '#cea3d5',
         padding: 10,
         borderRadius: 20,
         borderTopLeftRadius: 0,

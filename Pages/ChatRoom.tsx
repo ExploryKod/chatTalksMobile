@@ -72,7 +72,7 @@ export default function ChatRoom() {
   return (
     <Main styles={style.disposition}>
         <ScrollView style={style.containerRooms}>
-            {data?.map((room: IRoom, index) => (
+            {data?.map((room: IRoom, index : number) => (
                 <View key={index}>
                   <RoomCard name={room.name} description={room.description} id={room.id.toString()} />
                 </View>
