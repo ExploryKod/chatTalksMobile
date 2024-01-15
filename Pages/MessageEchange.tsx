@@ -107,11 +107,11 @@ const MessageEchange: React.FC = ({navigation, route}: any) => {
         if (
           msg.action &&
           msg?.action !== 'send-message' &&
-          msg?.sender?.name != '' &&
-          msg?.sender?.roomId != '' &&
+          msg?.sender?.name !== '' &&
+          msg?.sender?.roomId !== '' &&
           msg?.sender?.roomId !== undefined &&
           msg?.sender?.roomId === roomId &&
-          msg?.sender?.name != undefined
+          msg?.sender?.name !== undefined
         ) {
           onMessageAction(msg?.action, msg?.sender?.name);
         }
@@ -200,7 +200,7 @@ const MessageEchange: React.FC = ({navigation, route}: any) => {
     }
 
     if (personName && action) {
-      if (personName != '' && action === 'user-join') {
+      if (personName !== '' && action === 'user-join') {
         Toast.show({
           type: 'info',
           text1: `${personName} vient de rejoindre la salle`,
@@ -210,7 +210,7 @@ const MessageEchange: React.FC = ({navigation, route}: any) => {
           personName,
         ]);
       }
-      if (personName != '' && action === 'user-left') {
+      if (personName !== '' && action === 'user-left') {
         Toast.show({
           type: 'info',
           text1: `${personName} vient de quitter la salle`,
@@ -223,15 +223,8 @@ const MessageEchange: React.FC = ({navigation, route}: any) => {
     }
   };
 
-  console.log(
-    'messages =======> ',
-    messages.filter(message => message.action === 'send-message'),
-  );
-
-  // console.log("Message Input ==> :", messageInput);
   return (
     <View style={style.messageContainer}>
-      {/*<Button title="Connect to Server" onPress={connectWebSocket}/>*/}
       <ScrollView
         ref={scrollViewRef as React.RefObject<ScrollView>}
         onContentSizeChange={() => scrollViewRef.current?.scrollToEnd()}>
@@ -241,14 +234,14 @@ const MessageEchange: React.FC = ({navigation, route}: any) => {
             <View
               key={index}
               style={
-                message.sendername === 'nass'
+                message.sendername === username
                   ? style.bubbleUser
                   : style.bubbleOther
               }>
               <View style={style.bubbleUsername}>
                 <Text
                   style={
-                    message.sendername === 'nass'
+                    message.sendername !== username
                       ? {color: COLORS.darkBlue}
                       : {color: COLORS.darkpink}
                   }>
@@ -257,7 +250,7 @@ const MessageEchange: React.FC = ({navigation, route}: any) => {
               </View>
               <View
                 style={
-                  message.sendername === 'nass'
+                  message.sendername !== username
                     ? style.bubbleMessageUser
                     : style.bubbleMessageOther
                 }>
@@ -268,6 +261,9 @@ const MessageEchange: React.FC = ({navigation, route}: any) => {
             </View>
           ))}
       </ScrollView>
+      <View style={style.messageInfo}>
+        <Text style={style.info}>Salle {roomId}</Text>
+      </View>
       <View style={style.messageForm}>
         <TextInput
           placeholder="Ecrivez ici"
@@ -292,7 +288,7 @@ const style = StyleSheet.create({
     backgroundColor: COLORS.darkLavender,
   },
   bubbleOther: {
-    maxWidth: '45%',
+    maxWidth: '100%',
     margin: 10,
     position: 'relative',
     display: 'flex',
@@ -301,7 +297,7 @@ const style = StyleSheet.create({
     alignItems: 'flex-end',
   },
   bubbleUser: {
-    maxWidth: '45%',
+    maxWidth: '100%',
     margin: 10,
     position: 'relative',
     display: 'flex',
@@ -337,6 +333,20 @@ const style = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: COLORS.lightLavender,
+  },
+  messageInfo: {
+    minHeight: 30,
+    maxWidth: '40%',
+    borderTopRightRadius: 20,
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: COLORS.darkBlue,
+  },
+  info: {
+    color: COLORS.light,
   },
   sendMessageBtn: {
     padding: 10,
