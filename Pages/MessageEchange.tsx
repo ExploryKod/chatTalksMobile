@@ -128,13 +128,11 @@ useEffect(() => {
     };
 
     newWs.onerror = (e: Event) => {
-        // An error occurred
         console.log('Error:', e);
         setServerResponse('Error connection: ' + e);
     };
 
     newWs.onclose = (e: any) => {
-        // Connection closed
         console.log('Connection closed:', e.code, e.reason);
         setWs(null);
         setServerResponse('Connection closed');

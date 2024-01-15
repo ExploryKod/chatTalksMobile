@@ -26,7 +26,7 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [inputText, setInputText] = useState<{ [key: string]: string }>({});
   const [errorAuthe, setErrorAuthe] = useState('');
-  const { setToken, setUsername, setAdminStatus, username } = useLoggedStore();
+  const { setToken, setUsername, setAdminStatus, username, setUserId } = useLoggedStore();
   const { serverUrl } = useConfig();
   const navigation = useNavigation<LoginScreenProp>();
 
@@ -79,7 +79,8 @@ export default function Login() {
           setIsLoading(false);
           setToken(data.token);
           setUsername(data.username);
-          console.log("data.username", data.username);
+          setUserId(data.userId.toString());
+          console.log("data.userID", data.userId.toString());
           setAdminStatus(data.admin);
           setTimeout(() => {
             Toast.show({
