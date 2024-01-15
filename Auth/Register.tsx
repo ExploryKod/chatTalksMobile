@@ -1,18 +1,13 @@
-import {
-  StyleSheet,
-  TextInput,
-  View,
-  Text, Image
-} from 'react-native';
-import Main from "../Component/Main";
+import {StyleSheet, TextInput, View, Text, Image} from 'react-native';
+import Main from '../Component/Main';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import React, { useState } from "react";
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import {useConfig} from "../Hook/useConfig";
+import React, {useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {useConfig} from '../Hook/useConfig';
 
 type RootStackParamList = {
   Login: undefined;
@@ -23,34 +18,33 @@ type ConnexionScreenProp = NativeStackNavigationProp<RootStackParamList>;
 function Register() {
   const [errorAuthe, setErrorAuthe] = useState('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [inputText, setInputText] = useState<{ [key: string]: string }>({});
+  const [inputText, setInputText] = useState<{[key: string]: string}>({});
   const navigation = useNavigation<ConnexionScreenProp>();
-  const { serverUrl } = useConfig();
+  const {serverUrl} = useConfig();
 
   const handleChange = (name: string, value: string) => {
-    setInputText((prevState) => ({
+    setInputText(prevState => ({
       ...prevState,
       [name]: value,
     }));
   };
 
   const handleSubmit = async () => {
-
     setIsLoading(true);
 
-    if(inputText.Username === undefined || inputText.Password === undefined) {
+    if (inputText.Username === undefined || inputText.Password === undefined) {
       setErrorAuthe('Veuillez remplir tous les champs');
       setIsLoading(false);
       return;
     }
 
-    if(inputText.Username === '' || inputText.Password === '') {
+    if (inputText.Username === '' || inputText.Password === '') {
       setErrorAuthe('Veuillez remplir tous les champs');
       setIsLoading(false);
       return;
     }
 
-    if(inputText.Password !== inputText.ConfirmPassword) {
+    if (inputText.Password !== inputText.ConfirmPassword) {
       setErrorAuthe('Les mots de passe ne correspondent pas');
       setIsLoading(false);
       return;
@@ -60,15 +54,15 @@ function Register() {
       const response = await fetch(`${serverUrl}/auth/register`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
+          'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: new URLSearchParams({
           username: inputText.Username,
           password: inputText.ConfirmPassword,
-          email: "waiting@email.com",
-        }).toString()
+          email: 'waiting@email.com',
+        }).toString(),
       });
-      console.log('response login ', response)
+      console.log('response login ', response);
       if (response.ok) {
         console.log('réponse bien reçu');
         setIsLoading(false);
@@ -76,7 +70,6 @@ function Register() {
         console.log('data ====>', data);
         setErrorAuthe('' + data.message);
         navigation.navigate('Login');
-
       } else {
         const errorData = await response.json();
         setIsLoading(false);
@@ -89,7 +82,6 @@ function Register() {
     }
   };
 
-
   const handleLogin = () => {
     navigation.navigate('Login');
   };
@@ -98,19 +90,19 @@ function Register() {
     <Main styles={style.disposition}>
       <View style={style.imageContainer}>
         <Image
-            style={{
-              resizeMode: 'cover',
-              height: 100,
-              width: 100,
-              tintColor: '#A3298B'
-            }}
-            source={require('./assets/black-cat.png')}
+          style={{
+            resizeMode: 'cover',
+            height: 100,
+            width: 100,
+            tintColor: '#A3298B',
+          }}
+          source={require('./assets/black-cat.png')}
         />
       </View>
       <View style={style.composantInput}>
         <TextInput
           keyboardType="default"
-          onChangeText={(text) => handleChange('Username', text)}
+          onChangeText={text => handleChange('Username', text)}
           style={style.inputProp}
           placeholderTextColor="black"
           placeholder="Votre pseudo"
@@ -119,7 +111,7 @@ function Register() {
         <TextInput
           keyboardType="default"
           secureTextEntry={true}
-          onChangeText={(text) => handleChange('Password', text)}
+          onChangeText={text => handleChange('Password', text)}
           style={style.inputProp}
           placeholderTextColor="black"
           placeholder="Mot de passe"
@@ -128,7 +120,7 @@ function Register() {
         <TextInput
           keyboardType="default"
           secureTextEntry={true}
-          onChangeText={(text) => handleChange('ConfirmPassword', text)}
+          onChangeText={text => handleChange('ConfirmPassword', text)}
           style={style.inputProp}
           placeholderTextColor="black"
           placeholder="Confirmer le mot de passe"
@@ -136,7 +128,7 @@ function Register() {
         />
 
         {errorAuthe !== '' && (
-            <Text style={{ color: 'red', fontSize: hp(2.2) }}>{errorAuthe}</Text>
+          <Text style={{color: 'red', fontSize: hp(2.2)}}>{errorAuthe}</Text>
         )}
 
         <Text style={style.buttonCreate} onPress={handleSubmit}>
@@ -147,12 +139,8 @@ function Register() {
             display: 'flex',
             flexDirection: 'row',
             gap: wp(40),
-          }}
-        >
-          <Text
-            onPress={handleLogin}
-            style={{ color: 'white', fontSize: hp(2) }}
-          >
+          }}>
+          <Text onPress={handleLogin} style={{color: 'white', fontSize: hp(2)}}>
             Se connecter
           </Text>
         </View>
@@ -165,7 +153,7 @@ const style = StyleSheet.create({
     width: wp(95),
     alignItems: 'center',
   },
-  imageContainer : {
+  imageContainer: {
     width: wp(100),
     alignItems: 'flex-start',
     marginTop: hp(10),

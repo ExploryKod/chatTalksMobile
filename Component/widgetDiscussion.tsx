@@ -1,5 +1,5 @@
-import React, { ReactNode } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import React, {ReactNode} from 'react';
+import {View, TouchableOpacity} from 'react-native';
 
 interface DiscussionContainerProps {
   children: ReactNode;

@@ -11,7 +11,6 @@ import {useNavigation} from '@react-navigation/native';
 import type {openMessageEchange} from '../Types/chat';
 
 const RoomCard = ({name, description, id}: IRoom) => {
-
   const [image, setImage] = useState<string>('');
   const imageUrl =
     'https://images.pexels.com/photos/3937272/pexels-photo-3937272.jpeg';

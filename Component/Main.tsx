@@ -1,5 +1,5 @@
-import React, { ReactNode } from 'react';
-import { View} from 'react-native';
+import React, {ReactNode} from 'react';
+import {View} from 'react-native';
 
 interface MainContainerProps {
   children: ReactNode;
@@ -8,6 +8,6 @@ interface MainContainerProps {
 export default function Main({
   children,
   ...props
-}: MainContainerProps & { styles: any }) {
+}: MainContainerProps & {styles: any}) {
   return <View style={props.styles}>{children}</View>;
 }

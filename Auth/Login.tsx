@@ -1,17 +1,17 @@
-import {StyleSheet, TextInput, View, Text, Image} from "react-native";
-import Main from "../Component/Main.tsx";
+import {StyleSheet, TextInput, View, Text, Image} from 'react-native';
+import Main from '../Component/Main.tsx';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { useState } from "react";
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import {useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
-import {useLoggedStore} from "../StateManager/userStore.ts";
+import {useLoggedStore} from '../StateManager/userStore.ts';
 import Toast from 'react-native-toast-message';
-import React from "react";
-import {useConfig} from "../Hook/useConfig.tsx";
+import React from 'react';
+import {useConfig} from '../Hook/useConfig.tsx';
 
 //const {height, width} = Dimensions.get('window');
 
@@ -24,35 +24,35 @@ export type LoginScreenProp = NativeStackNavigationProp<RootFromProfile>;
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [inputText, setInputText] = useState<{ [key: string]: string }>({});
+  const [inputText, setInputText] = useState<{[key: string]: string}>({});
   const [errorAuthe, setErrorAuthe] = useState('');
-  const { setToken, setUsername, setAdminStatus, username, setUserId } = useLoggedStore();
-  const { serverUrl } = useConfig();
+  const {setToken, setUsername, setAdminStatus, username, setUserId} =
+    useLoggedStore();
+  const {serverUrl} = useConfig();
   const navigation = useNavigation<LoginScreenProp>();
 
   const handleChange = (name: string, value: string) => {
-    setInputText((prevState) => ({
+    setInputText(prevState => ({
       ...prevState,
       [name]: value,
     }));
   };
 
-
   const handleSubmit = async () => {
     setIsLoading(true);
-    if(inputText.Username === undefined || inputText.Password === undefined) {
+    if (inputText.Username === undefined || inputText.Password === undefined) {
       Toast.show({
         type: 'error',
-        text1: "Vous n'avez pas rempli tous les champs"
+        text1: "Vous n'avez pas rempli tous les champs",
       });
       setIsLoading(false);
       return;
     }
 
-    if(inputText.Username === '' || inputText.Password === '') {
+    if (inputText.Username === '' || inputText.Password === '') {
       Toast.show({
         type: 'error',
-        text1: "Vous n'avez pas rempli tous les champs"
+        text1: "Vous n'avez pas rempli tous les champs",
       });
       setIsLoading(false);
       return;
@@ -62,44 +62,43 @@ export default function Login() {
       const response = await fetch(`${serverUrl}/auth/logged`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+          'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: new URLSearchParams({
           username: inputText.Username,
-          password: inputText.Password
-        }).toString()
+          password: inputText.Password,
+        }).toString(),
       });
-      console.log('response login ', response)
+      console.log('response login ', response);
       if (response.ok) {
         console.log('réponse bien reçu');
         const data = await response.json();
-        if(data.token) {
-          console.log("data ====>", data)
-          console.log('token bien reçu ====>', data.token)
+        if (data.token) {
+          console.log('data ====>', data);
+          console.log('token bien reçu ====>', data.token);
           setIsLoading(false);
           setToken(data.token);
           setUsername(data.username);
           setUserId(data.userId.toString());
-          console.log("data.userID", data.userId.toString());
+          console.log('data.userID', data.userId.toString());
           setAdminStatus(data.admin);
           setTimeout(() => {
             Toast.show({
               type: 'success',
-              text1: `Bienvenue sur Chat Talks`
+              text1: 'Bienvenue sur Chat Talks',
             });
-            }, 500);
+          }, 500);
 
           navigation.navigate('Profile');
         } else {
-          console.log("data ====> no token")
+          console.log('data ====> no token');
           setIsLoading(false);
           Toast.show({
             type: 'error',
-            text1: 'There is no token'
+            text1: 'There is no token',
           });
           setToken('');
         }
-
       } else {
         setIsLoading(false);
         const errorData = await response.json();
@@ -120,19 +119,19 @@ export default function Login() {
     <Main styles={style.disposition}>
       <View style={style.imageContainer}>
         <Image
-            style={{
-              resizeMode: 'cover',
-              height: 100,
-              width: 100,
-              tintColor: '#A3298B'
-            }}
-            source={require('./assets/black-cat.png')}
+          style={{
+            resizeMode: 'cover',
+            height: 100,
+            width: 100,
+            tintColor: '#A3298B',
+          }}
+          source={require('./assets/black-cat.png')}
         />
       </View>
       <View style={style.composantInput}>
         <TextInput
           keyboardType="default"
-          onChangeText={(text) => handleChange('Username', text)}
+          onChangeText={text => handleChange('Username', text)}
           style={style.inputProp}
           placeholderTextColor="black"
           placeholder="Username"
@@ -141,7 +140,7 @@ export default function Login() {
         <TextInput
           keyboardType="default"
           secureTextEntry={true}
-          onChangeText={(text) => handleChange('Password', text)}
+          onChangeText={text => handleChange('Password', text)}
           style={style.inputProp}
           placeholderTextColor="black"
           placeholder="Password"
@@ -149,14 +148,16 @@ export default function Login() {
         />
 
         {errorAuthe !== '' && (
-          <Text style={{ color: 'red', fontSize: hp(2.2) }}>{errorAuthe}</Text>
+          <Text style={{color: 'red', fontSize: hp(2.2)}}>{errorAuthe}</Text>
         )}
 
         <Text style={style.buttonLogin} onPress={handleSubmit}>
-          {isLoading ? "Register ..." : "Se connecter"}
+          {isLoading ? 'Register ...' : 'Se connecter'}
         </Text>
-        <View style={{ display: 'flex', flexDirection: 'row', gap: wp(40) }}>
-          <Text style={{ color: 'white', fontSize: hp(2) }} onPress={handleRegister}>
+        <View style={{display: 'flex', flexDirection: 'row', gap: wp(40)}}>
+          <Text
+            style={{color: 'white', fontSize: hp(2)}}
+            onPress={handleRegister}>
             Créer un compte
           </Text>
         </View>
@@ -178,7 +179,7 @@ const style = StyleSheet.create({
     gap: wp(30),
     backgroundColor: '#161C3D',
   },
-  imageContainer : {
+  imageContainer: {
     width: wp(100),
     alignItems: 'flex-start',
     marginTop: hp(10),
@@ -194,7 +195,6 @@ const style = StyleSheet.create({
     margin: hp(1.5),
     padding: 10,
   },
-
 
   buttonLogin: {
     fontSize: hp(3),

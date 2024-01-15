@@ -4,11 +4,11 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import React, {useState} from "react";
-import {useNavigation} from "@react-navigation/native";
-import {useLoggedStore} from "../StateManager/userStore";
-import {NativeStackNavigationProp} from "@react-navigation/native-stack";
-import Toast from "react-native-toast-message";
+import React, {useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {useLoggedStore} from '../StateManager/userStore';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import Toast from 'react-native-toast-message';
 
 export type RootFromLogin = {
   Login: undefined;
@@ -20,14 +20,13 @@ export type ProfileScreenProp = NativeStackNavigationProp<RootFromLogin>;
 export default function Parameter() {
   const navigation = useNavigation<ProfileScreenProp>();
 
-
   const handleLogout = () => {
     removeToken();
     removeUsername();
     removeAdminStatus();
     Toast.show({
       type: 'error',
-      text1: "Vous êtes bien déconnecté"
+      text1: 'Vous êtes bien déconnecté',
     });
     // Redirect to the login page or any other desired page after logout
     navigation.navigate('Login');
@@ -37,16 +36,18 @@ export default function Parameter() {
     navigation.navigate('TcpClient');
   };
 
-  const { removeToken, removeUsername, removeAdminStatus } = useLoggedStore();
+  const {removeToken, removeUsername, removeAdminStatus} = useLoggedStore();
   return (
     <Main styles={style.disposition}>
-      <Text style={{ fontSize: 20, marginLeft: 10, marginTop: 30 }}>Paramètres</Text>
-      <View style={{ maxWidth: 200, marginLeft: 10, marginTop: 5 }}>
+      <Text style={{fontSize: 20, marginLeft: 10, marginTop: 30}}>
+        Paramètres
+      </Text>
+      <View style={{maxWidth: 200, marginLeft: 10, marginTop: 5}}>
         <Button
-            onPress={handleLogout}
-            title="Se déconnecter"
-            color="#841584"
-            accessibilityLabel="Se déconnecter"
+          onPress={handleLogout}
+          title="Se déconnecter"
+          color="#841584"
+          accessibilityLabel="Se déconnecter"
         />
       </View>
     </Main>

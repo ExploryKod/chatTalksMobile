@@ -6,7 +6,6 @@ import {
   ScrollView,
   Modal,
   Pressable,
-  Alert,
 } from 'react-native';
 import Main from '../Component/Main';
 import {COLORS} from '../Styles/constants.tsx';
