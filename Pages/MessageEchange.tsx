@@ -1,14 +1,12 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {View, Text, TextInput, Button, ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Text, TextInput, Button, ScrollView, StyleSheet} from 'react-native';
 import {useConfig} from "../Hook/useConfig";
 import {useLoggedStore} from "../StateManager/userStore";
 import Toast from "react-native-toast-message";
 import type {ISavedMessage, Message} from "../Types/chat";
-import { COLORS } from "../Styles/constants.tsx";
-import { SendHorizontal } from 'lucide-react-native';
 
 
-const MessageEchange: React.FC = ({  navigation, route }: any) => {
+const MessageEchange: React.FC = ({  navigation, route }) => {
     const { roomId } = route.params || {};
     const {serverUrl} = useConfig();
     const {token, username} = useLoggedStore();
@@ -27,7 +25,6 @@ const MessageEchange: React.FC = ({  navigation, route }: any) => {
     const [sendername, setSendername] = useState<string>('')
     const [sendermessage, setSendermessage] = useState<string>('')
     const [action, setAction] = useState<string>('')
-    const scrollViewRef = useRef<ScrollView>(null);
 
     const handleJoinRoom = () => {
         if(!ws) {
@@ -154,11 +151,6 @@ const sendMessage = () => {
     console.log('messageInput.message')
     ws.send(JSON.stringify(messageInput));
     console.log('messageInput', messageInput)
-    if(scrollViewRef.current) {
-        scrollViewRef.current.scrollToEnd({ animated: true });
-
-    }
-
     setMessageInput({
         action: "send-message",
         message: "",
@@ -216,32 +208,31 @@ console.log("messages =======> ", messages.filter((message) => message.action ==
 
 // console.log("Message Input ==> :", messageInput);
 return (
-    <View style={style.messageContainer}>
-        {/*<Button title="Connect to Server" onPress={connectWebSocket}/>*/}
-        <ScrollView ref={scrollViewRef as React.RefObject<ScrollView>} onContentSizeChange={() => scrollViewRef.current?.scrollToEnd()}>
+    <View>
+        <Text>Room: {roomId}</Text>
+        <TextInput
+            placeholder="Ecrivez ici"
+            value={messageInput.message}
+            onChangeText={(text) => handleMessageChange(text)}
+        />
+        <Button title="Envoyer" onPress={sendMessage}/>
+        <Text>Server Response: {serverResponse}</Text>
+        <Text>Message History:</Text>
+        <ScrollView>
             {messages
                 .filter((message) => message.action === "send-message")
                 .map((message, index) => (
-                <View key={index} style={message.sendername === "nass" ? style.bubbleUser : style.bubbleOther}>
-                    <View style={style.bubbleUsername}>
-                        <Text style={message.sendername === "nass" ? {color: COLORS.darkBlue} : {color: COLORS.darkpink}}>{message.sendername}</Text>
+                <View key={index + Math.random()} style={message.sendername === username ? style.bubbleLeft : style.bubbleRight }>
+                    <View style={message.sendername === username ? style.bubbleMessageLeft : style.bubbleMessageRight}>
+                        <Text>{message.sendermessage}</Text>
                     </View>
-                    <View style={message.sendername === "nass" ? style.bubbleMessageUser : style.bubbleMessageOther}>
-                        <Text style={{color: COLORS.lightLavender}}>{message.sendermessage}</Text>
+                    <View style={style.bubbleUsername}>
+                        <Text>{message.sendername}</Text>
                     </View>
                 </View>
+
             ))}
         </ScrollView>
-        <View style={style.messageForm}>
-            <TextInput
-                placeholder="Ecrivez ici"
-                value={messageInput.message}
-                onChangeText={(text) => handleMessageChange(text)}
-            />
-            <TouchableOpacity onPress={sendMessage} style={style.sendMessageBtn}>
-                <SendHorizontal color={COLORS.darkBlue} height={50} width={30} />
-            </TouchableOpacity>
-        </View>
     </View>
 );
 
@@ -250,61 +241,39 @@ return (
 export default MessageEchange;
 
 const style = StyleSheet.create({
-    messageContainer: {
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        backgroundColor: COLORS.darkLavender,
-    },
-    bubbleOther : {
-        maxWidth: '45%',
-        margin: 10,
-        position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'flex-end',
-    },
-    bubbleUser : {
-        maxWidth: '45%',
-        margin: 10,
+    bubbleLeft : {
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'flex-start',
+        margin: 10,
     },
-    bubbleMessageUser: {
-        minWidth: 100,
+    bubbleRight : {
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+        margin: 10,
+    },
+    bubbleMessageRight: {
+        backgroundColor: '#A6A8C9',
+        padding: 10,
+        borderRadius: 20,
+        borderTopRightRadius: 0,
+    },
+    bubbleMessageLeft: {
+        backgroundColor: '#cea3d5',
         padding: 10,
         borderRadius: 20,
         borderTopLeftRadius: 0,
-        backgroundColor: COLORS.darkpink,
-    },
-    bubbleMessageOther: {
-        minWidth: 100,
-        padding: 10,
-        borderRadius: 20,
-        borderTopLeftRadius: 0,
-        backgroundColor: COLORS.darkBlue,
     },
     bubbleUsername: {
         marginTop: 2,
         padding: 5,
         fontSize: 10,
         color: '#999',
-    },
-    messageForm: {
-        minHeight: 50,
-        position: 'relative',
-        display: "flex",
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        backgroundColor: COLORS.lightLavender,
-    },
-    sendMessageBtn: {
-        padding: 10,
-        backgroundColor: 'transparent'
-    },
+    }
+
 })

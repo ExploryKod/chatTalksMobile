@@ -1,4 +1,4 @@
-import {StyleSheet, TextInput, View, Text} from "react-native";
+import {StyleSheet, TextInput, View, Text, Touchable, TouchableOpacity, ImageBackground} from "react-native";
 import Main from "../Component/Main";
 import {
     widthPercentageToDP as wp,
@@ -9,9 +9,10 @@ import Discussion from "../Component/widgetDiscussion";
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {MessagesSquare} from 'lucide-react-native';
+import {ImageIcon, MessagesSquare} from 'lucide-react-native';
 import {useConfig} from "../Hook/useConfig.tsx";
 import {useLoggedStore} from "../StateManager/userStore.ts";
+import {IDiscussion} from "../Types/discussions";
 
 type RootFromMessageEchange = {
     MessageEchange: undefined;
@@ -23,7 +24,7 @@ export default function ListDiscussion() {
     const {serverUrl} = useConfig();
     const {userId, token} = useLoggedStore();
 
-
+    const [dataDiscussion, setDataDiscussion] = React.useState<IDiscussion[]>([]);
 
     useEffect(() => {
         if (!userId) return;
@@ -38,43 +39,74 @@ export default function ListDiscussion() {
                 if (response.ok) {
                     return response.json();
                 } else {
-                    console.log('échec de la récupération des discussions');
+                    console.error('échec de la récupération des discussions');
                 }
             })
             .then((data) => {
-                console.log('MARCHE STP :', data);
+                if (data) {
+                    setDataDiscussion(data);
+                }
             })
     }, []);
     const handleOpenMessageEchange = () => {
         navigationMessageEchange.navigate('MessageEchange');
     };
 
+    const handleClick = async (dataRoom: IDiscussion) => {
+        try {
+            // @ts-ignore
+            navigationMessageEchange.navigate('MessageEchange', {
+                roomId: dataRoom.id.toString(),
+                roomName: dataRoom.room.name,
+                roomDescription: dataRoom.room.description
+            });
+        } catch (error) {
+            console.error('log failed:', error);
+        }
+    };
+
+
     return (
         <Main styles={style.disposition}>
-            <Discussion
-                styles={style.discussionStyle}
-                onPress={handleOpenMessageEchange}
-            >
-                <Text style={style.csspp}>
-                    <MessagesSquare color="#A3298B" size={hp(4)}/>
-                </Text>
-                <View>
-                    <Text style={{fontSize: 20}}>Username</Text>
-                    <Text>Last Message</Text>
-                </View>
-            </Discussion>
-            <Discussion
-                styles={style.discussionStyle}
-                onPress={handleOpenMessageEchange}
-            >
-                <Text style={style.csspp}>
-                    <MessagesSquare color="#A3298B" size={hp(4)}/>
-                </Text>
-                <View>
-                    <Text style={{fontSize: 20}}>Username</Text>
-                    <Text>Last Message</Text>
-                </View>
-            </Discussion>
+            {
+                dataDiscussion.map((discussion, index) => (
+                    <TouchableOpacity onPress={() => handleClick(discussion)}>
+                        <Discussion key={index} styles={style.discussionStyle}>
+                            <Text style={style.csspp}>
+                                <ImageBackground source={{uri: `https://source.unsplash.com/200x200/?${discussion.room.name.split(' ')[0]}` }} />
+                            </Text>
+                            <View>
+                                <Text style={{fontSize: 20}}>{discussion.room.name}</Text>
+                                <Text>Last Message</Text>
+                            </View>
+                        </Discussion>
+                    </TouchableOpacity>
+                ))
+            }
+            {/*<Discussion*/}
+            {/*    styles={style.discussionStyle}*/}
+            {/*    onPress={handleOpenMessageEchange}*/}
+            {/*>*/}
+            {/*    <Text style={style.csspp}>*/}
+            {/*        <MessagesSquare color="#A3298B" size={hp(4)}/>*/}
+            {/*    </Text>*/}
+            {/*    <View>*/}
+            {/*        <Text style={{fontSize: 20}}>Username</Text>*/}
+            {/*        <Text>Last Message</Text>*/}
+            {/*    </View>*/}
+            {/*</Discussion>*/}
+            {/*<Discussion*/}
+            {/*    styles={style.discussionStyle}*/}
+            {/*    onPress={handleOpenMessageEchange}*/}
+            {/*>*/}
+            {/*    <Text style={style.csspp}>*/}
+            {/*        <MessagesSquare color="#A3298B" size={hp(4)}/>*/}
+            {/*    </Text>*/}
+            {/*    <View>*/}
+            {/*        <Text style={{fontSize: 20}}>Username</Text>*/}
+            {/*        <Text>Last Message</Text>*/}
+            {/*    </View>*/}
+            {/*</Discussion>*/}
         </Main>
     );
 }

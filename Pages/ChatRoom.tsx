@@ -1,49 +1,25 @@
-import {StyleSheet, TextInput, View, Text, ScrollView, Modal, Pressable, Alert} from "react-native";
+import {StyleSheet, TextInput, View, Text, ScrollView} from "react-native";
 import Main from "../Component/Main";
-import { COLORS } from "../Styles/constants.tsx";
 import {useConfig} from "../Hook/useConfig";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import useGetData from "../Hook/useGetData";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import RoomCard from "../Component/RoomCard";
 import {IRoom} from "../Types/chat";
 import {useLoggedStore} from "../StateManager/userStore";
-import { X } from 'lucide-react-native';
-import Toast from "react-native-toast-message";
 
 
 export default function ChatRoom() {
   const { serverUrl } = useConfig();
   const { token } = useLoggedStore();
-  const [modalVisible, setModalVisible] = useState(false);
+
   const [inputName, setInputName] = useState("");
   const [inputTheme, setInputTheme] = useState("");
-  const [roomList, setRoomList] = useState<IRoom[]>([]);
-
-
-  const { data } = useGetData(`${serverUrl}/chat/rooms`);
-  useEffect(() => {
-    if (data) {
-      setRoomList(data);
-    }
-  }, [data]);
 
   const createRoom = async () => {
-
-    if(inputName.length > 30) {
-      setModalVisible(!modalVisible)
-      Toast.show({type: 'error', text1: `Le nom de la salle ne doit pas dépasser 30 caractères`});
-      return;
-    }
-
-    if(inputTheme.length > 50) {
-        setModalVisible(!modalVisible)
-        Toast.show({type: 'error', text1: `Le thème de la salle ne doit pas dépasser 50 caractères`});
-        return;
-    }
 
     if (inputName !== '' && inputTheme !== '') {
       try {
@@ -61,39 +37,25 @@ export default function ChatRoom() {
         });
 
         if (response.ok) {
+          console.log('room created');
           const data = await response.json();
+          console.log("data",data)
           if(data.id && data.name && data.description) {
-            const newRoom ={id: data.id, name: data.name, description: data.description} as IRoom;
-            setRoomList([...roomList, newRoom]);
-            setInputName("")
-            setInputTheme("")
-            setModalVisible(!modalVisible);
-            Toast.show({type: 'success', text1: `La salle ${data.name} a été créé`});
+            const newRoom ={id: data.id.toString(), name: data.name, description: data.description} as IRoom;
+            console.log('new room created', newRoom)
+             // setRoomsList([...roomsList, newRoom]);
           } else {
-            setModalVisible(!modalVisible)
-            setInputName("")
-            setInputTheme("")
-            Toast.show({type: 'error', text1: `Echec de votre requête: élèments manquants`});
+            console.log('échec de votre requête: élèments manquants');
           }
         } else {
-          setModalVisible(!modalVisible)
-          setInputName("")
-          setInputTheme("")
-          Toast.show({type: 'error', text1: `Echec de votre requête: la salle n'a pu être créé`});
-          Toast.show({type: 'error', text1: `${data.message}`});
+          console.log('échec de la création de room');
         }
 
       } catch (error) {
-        setModalVisible(!modalVisible)
-        setInputName("")
-        setInputTheme("")
-        Toast.show({type: 'error', text1: `Echec de votre requête: la salle n'a pu être créé`});
+        console.error('log failed:', error);
       }
     }else{
-      setModalVisible(!modalVisible)
-      setInputName("")
-      setInputTheme("")
-      Toast.show({type: 'error', text1: `Êtes-vous sûr d'avoir rempli tous les champs ?`});
+      console.log('veuillez remplir tous les champs');
     }
   };
 
@@ -110,150 +72,54 @@ export default function ChatRoom() {
   return (
     <Main styles={style.disposition}>
         <ScrollView style={style.containerRooms}>
-            {roomList?.map((room: IRoom, index:number) => (
-                <View key={index} style={[index === roomList.length -1 && {marginBottom: 30}]}>
+            {data?.map((room: IRoom, index : number) => (
+                <View key={index}>
                   <RoomCard name={room.name} description={room.description} id={room.id.toString()} />
                 </View>
             ))}
         </ScrollView>
-      <View>
-        <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
-              setModalVisible(!modalVisible);
-            }}>
-          <View style={style.centeredView}>
-            <View style={style.modalView}>
-              <View style={style.modalHeader}>
-                <Pressable
-                    style={({ pressed }) => [{opacity: pressed ? 0.5 : 1}]}
-                    onPress={() => setModalVisible(!modalVisible)}>
-                  <X color={COLORS.darkBlue} size={hp(6)} />
-                </Pressable>
-              </View>
-              <View style={style.modalContent}>
-                <TextInput
-                    keyboardType="default"
-                    onChangeText={(text) => handleChangeName(text)}
-                    style={style.inputProp}
-                    placeholderTextColor="black"
-                    placeholder="Nom de la salle"
-                />
-                <TextInput
-                    keyboardType="default"
-                    onChangeText={(text) => handleChangeTheme(text)}
-                    style={style.inputProp}
-                    placeholderTextColor="black"
-                    placeholder="Thème du chat"
-                />
-                <Pressable
-                    onPress={createRoom}
-                    style={({ pressed }) => [
-                      style.buttonCreateRoom,
-                      {backgroundColor: pressed ? COLORS.darkpink : COLORS.darkLavender},
-                    ]}>
-                  <Text style={style.textButtonStyle}>Valider</Text>
-                </Pressable>
-              </View>
-            </View>
-          </View>
-        </Modal>
-        <View style={style.OpenModalContainer}>
-          <Pressable
-              style={style.buttonOpenModal}
-              onPress={() => setModalVisible(true)}>
-            <Text style={style.textButtonStyle}>Créer une salle</Text>
-          </Pressable>
-        </View>
+      <View style={style.separator}></View>
+      <View style={style.composantInput}>
+        <TextInput
+            keyboardType="default"
+            onChangeText={(text) => handleChangeName(text)}
+            style={style.inputProp}
+            placeholderTextColor="black"
+            placeholder="Nom de la salle"
+        />
+        <TextInput
+            keyboardType="default"
+            onChangeText={(text) => handleChangeTheme(text)}
+            style={style.inputProp}
+            placeholderTextColor="black"
+            placeholder="Thème"
+        />
+        <Text onPress={createRoom}  style={style.buttonEnvoyer}>Créer une salle</Text>
       </View>
+
     </Main>
+
+
+
   );
 }
 
 const style = StyleSheet.create({
   containerRooms: {
     flex: 1,
+    backgroundColor: "#161C3D",
     width: wp(100),
     height: hp(100),
-    padding: 10,
-    backgroundColor: COLORS.darkBlue
+    padding: 10
   },
-  disposition: {
-    flex: 1,
-    flexDirection: "column",
-    backgroundColor: COLORS.darkBlue,
-    justifyContent: "flex-start"
-  },
-  // Open Modal elements
-  OpenModalContainer: {
-    paddingVertical: 10,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-    minHeight: 65,
-    backgroundColor: '#A3298B'
-  },
-  buttonOpenModal: {
-    width: "33%",
-    height: 50,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: COLORS.darkBlue,
-    borderRadius: 10,
-  },
-  textButtonStyle: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  // Modal
-  centeredView: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    marginTop: 22,
-  },
-  modalView: {
-    width: "100%",
-    height: "103%",
-    margin: 0,
-    backgroundColor: 'white',
-    borderRadius: 0,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
+    separator: {
+        height: 10,
+        width: "100%",
+        backgroundColor: "#161C3D",
+        opacity: 0.8,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
-  },
-  modalHeader: {
-    width: "100%",
-    display: "flex",
-    justifyContent: "flex-end",
-    alignItems: "flex-end",
-    flexDirection: "row",
-    gap: 10,
-  },
-  modalContent: {
-    width: "100%",
-    height: "80%",
+  composantInput: {
+    width: wp(80),
     borderRadius: 25,
     paddingHorizontal: 10,
     marginHorizontal: 20,
@@ -262,27 +128,53 @@ const style = StyleSheet.create({
     alignItems: "center",
     flexDirection: "column",
     paddingTop: 20,
-    gap: 20,
+    gap: 10,
+  },
+  disposition: {
+    flex: 1,
+    flexDirection: "column",
+    backgroundColor: "white",
+    justifyContent: "flex-start"
   },
   inputProp: {
-    width: "80%",
-    height: 50,
+    width: wp(80),
+    height: hp(5),
     backgroundColor: "#dcdcdc",
     borderRadius: 10,
-    fontSize: 14,
+    fontSize: hp(2),
     padding: 10
   },
-  buttonCreateRoom: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+  buttonEnvoyer: {
+    backgroundColor: "#A3298B",
     minWidth: 150,
-    minHeight: 50,
+    maxWidth: wp(80),
+    height: hp(6),
     borderRadius: 8,
     marginVertical: 10,
     paddingVertical: 2,
     paddingHorizontal: 15,
     textAlign: "center",
     textAlignVertical: "center",
+    fontSize: hp(2.5),
+    color: "#fff"
   },
+
+  messageLeft: {
+    backgroundColor: "#dcdcdc",
+    marginTop: hp(0.8),
+    marginStart: hp(1),
+    padding: hp(1),
+    fontSize: hp(2.5),
+    borderRadius: 15,
+    alignSelf: "flex-start", // Alignez le message à gauche
+  },
+  messageRight: {
+    backgroundColor: "#dcdcdc",
+    marginTop: hp(0.8),
+    marginEnd: hp(1),
+    padding: hp(1),
+    fontSize: hp(2.5),
+    borderRadius: 15,
+    alignSelf: "flex-end", // Alignez le message à droite
+  }
 });
