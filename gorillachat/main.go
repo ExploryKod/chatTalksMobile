@@ -103,6 +103,7 @@ func main() {
 		r.Post("/send-message", handler.CreateMessageHandler)
 		r.Get("/chat/messages/{id}", handler.GetMessageHandler)
 		r.Get("/messages/room/delete-history/{id}", handler.DeleteMessageFromRoomHandler())
+		r.Get("/user/discussions/{id}", handler.GetUserDiscussions())
 	})
 
 	handler.Get("/ws", func(w http.ResponseWriter, r *http.Request) {

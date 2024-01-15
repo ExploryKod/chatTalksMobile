@@ -46,3 +46,11 @@ export type Message = {
     message: string;
     target: Target;
 }
+
+export type IUser = {
+    id: string;
+    username: string;
+    email: string;
+    password: string;
+    admin: boolean;
+}

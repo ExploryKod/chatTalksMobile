@@ -26,7 +26,7 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [inputText, setInputText] = useState<{ [key: string]: string }>({});
   const [errorAuthe, setErrorAuthe] = useState('');
-  const { setToken, setUsername, setAdminStatus, username } = useLoggedStore();
+  const { setToken, setUsername, setAdminStatus, username, setUserId } = useLoggedStore();
   const { serverUrl } = useConfig();
   const navigation = useNavigation<LoginScreenProp>();
 
@@ -79,6 +79,8 @@ export default function Login() {
           setIsLoading(false);
           setToken(data.token);
           setUsername(data.username);
+          setUserId(data.userId.toString());
+          console.log("data.userID", data.userId.toString());
           setAdminStatus(data.admin);
           setTimeout(() => {
             Toast.show({
@@ -151,7 +153,7 @@ export default function Login() {
         )}
 
         <Text style={style.buttonLogin} onPress={handleSubmit}>
-          {isLoading ? "Connexion ..." : "Se connecter"}
+          {isLoading ? "Register ..." : "Se connecter"}
         </Text>
         <View style={{ display: 'flex', flexDirection: 'row', gap: wp(40) }}>
           <Text style={{ color: 'white', fontSize: hp(2) }} onPress={handleRegister}>

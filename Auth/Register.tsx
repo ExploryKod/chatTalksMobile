@@ -20,7 +20,7 @@ type RootStackParamList = {
 
 type ConnexionScreenProp = NativeStackNavigationProp<RootStackParamList>;
 
-function Connexion() {
+function Register() {
   const [errorAuthe, setErrorAuthe] = useState('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [inputText, setInputText] = useState<{ [key: string]: string }>({});
@@ -202,4 +202,4 @@ const style = StyleSheet.create({
     color: 'white',
   },
 });
-export default Connexion;
+export default Register;
