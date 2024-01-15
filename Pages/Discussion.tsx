@@ -4,13 +4,14 @@ import {
   Text,
   TouchableOpacity,
   ImageBackground,
+  Image,
 } from 'react-native';
 import Main from '../Component/Main';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import Discussion from '../Component/widgetDiscussion';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
@@ -27,7 +28,7 @@ export default function ListDiscussion() {
   const navigationMessageEchange = useNavigation<openMessageEchange>();
   const {serverUrl} = useConfig();
   const {userId, token} = useLoggedStore();
-
+  console.log('userId for Discussions ??', userId);
   const [dataDiscussion, setDataDiscussion] = React.useState<IDiscussion[]>([]);
 
   useEffect(() => {
@@ -54,14 +55,28 @@ export default function ListDiscussion() {
         }
       });
   }, []);
-  const handleOpenMessageEchange = () => {
-    navigationMessageEchange.navigate('MessageEchange');
-  };
+  // const handleOpenMessageEchange = () => {
+  //   navigationMessageEchange.navigate('Salle');
+  // };
+
+  const [image, setImage] = useState<string>('');
+  const imageUrl =
+    'https://images.pexels.com/photos/3937272/pexels-photo-3937272.jpeg';
+
+  useEffect(() => {
+    if (image) {
+      setImage(
+        'https://images.pexels.com/photos/3937272/pexels-photo-3937272.jpeg',
+      );
+    } else {
+      setImage(imageUrl);
+    }
+  }, [image]);
 
   const handleClick = async (dataRoom: IDiscussion) => {
     try {
       // @ts-ignore
-      navigationMessageEchange.navigate('MessageEchange', {
+      navigationMessageEchange.navigate('Salle', {
         roomId: dataRoom.id.toString(),
         roomName: dataRoom.room.name,
         roomDescription: dataRoom.room.description,
@@ -73,19 +88,21 @@ export default function ListDiscussion() {
 
   return (
     <Main styles={style.disposition}>
-      {dataDiscussion.map((discussion, index) => (
-        <TouchableOpacity onPress={() => handleClick(discussion)}>
-          <Discussion key={index} styles={style.discussionStyle}>
-            <Text style={style.csspp}>
+      {dataDiscussion.map(discussion => (
+        <TouchableOpacity
+          key={discussion.room.id}
+          onPress={() => handleClick(discussion)}>
+          <Discussion styles={style.discussionStyle}>
+            <View style={style.imageContainer}>
               <ImageBackground
+                style={{width: 100, height: 100, borderRadius: 100 / 2}}
                 source={{
-                  uri: `https://source.unsplash.com/200x200/?${
-                    discussion.room.name.split(' ')[0]
-                  }`,
+                  uri: `${image}`,
                 }}
               />
-            </Text>
+            </View>
             <View>
+              {/* eslint-disable-next-line react-native/no-inline-styles */}
               <Text style={{fontSize: 20}}>{discussion.room.name}</Text>
               <Text>Last Message</Text>
             </View>
@@ -121,14 +138,10 @@ export default function ListDiscussion() {
 }
 
 const style = StyleSheet.create({
-  csspp: {
-    margin: hp(0.3),
-    backgroundColor: 'white',
-    height: hp(8),
-    width: wp(15),
-    textAlign: 'center',
-    textAlignVertical: 'center',
-    borderRadius: hp(100),
+  imageContainer: {
+    width: 50,
+    height: 50,
+    borderRadius: 1000,
   },
 
   discussionStyle: {
