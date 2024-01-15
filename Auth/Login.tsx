@@ -79,6 +79,7 @@ export default function Login() {
           setIsLoading(false);
           setToken(data.token);
           setUsername(data.username);
+          console.log("data.username", data.username);
           setAdminStatus(data.admin);
           setTimeout(() => {
             Toast.show({
@@ -151,7 +152,7 @@ export default function Login() {
         )}
 
         <Text style={style.buttonLogin} onPress={handleSubmit}>
-          {isLoading ? "Connexion ..." : "Se connecter"}
+          {isLoading ? "Register ..." : "Se connecter"}
         </Text>
         <View style={{ display: 'flex', flexDirection: 'row', gap: wp(40) }}>
           <Text style={{ color: 'white', fontSize: hp(2) }} onPress={handleRegister}>

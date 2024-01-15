@@ -69,9 +69,9 @@ const MessageEchange: React.FC = ({  navigation, route }: any) => {
 
 
 useEffect(() => {
-
+    console.log('usernameNASS', username)
     // const newWs = new WebSocket('ws://10.0.2.2:9090/ws');
-    const newWs = new WebSocket(`ws://10.0.2.2:8000/ws?name=nass&roomId=${roomId ? roomId : "0"}`);
+    const newWs = new WebSocket(`ws://10.0.2.2:8000/ws?name=${username}&roomId=${roomId ? roomId : "0"}`);
     // const newWs = new WebSocket(`wss://go-chat-docker.onrender.com/ws?name=nass`);
 
     newWs.onopen = () => {
