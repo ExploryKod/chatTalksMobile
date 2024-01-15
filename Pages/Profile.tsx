@@ -5,6 +5,7 @@ import { Users } from 'lucide-react-native';
 import { MessageCircle } from 'lucide-react-native';
 import { Settings } from 'lucide-react-native';
 import ChatRoom from "./ChatRoom";
+import Discussion from "./Discussion.tsx"
 import ListDiscussion from "./Discussion";
 import Parameter from "./Settings";
 
@@ -22,7 +23,7 @@ export default function Profile() {
                         height: hp(4)
                     }
                 }}
-                name="discussions" component={ListDiscussion}/>
+                name="discussions" component={Discussion}/>
 
             <Tab.Screen
                 options={{
