@@ -68,7 +68,7 @@ export default function ChatRoom() {
   };
 
   const { data } = useGetData(`${serverUrl}/chat/rooms`);
-  console.log("rooms", data);
+  // console.log("rooms", data);
   return (
     <Main styles={style.disposition}>
         <ScrollView style={style.containerRooms}>
