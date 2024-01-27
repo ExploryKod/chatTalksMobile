@@ -111,36 +111,13 @@ export default function ListDiscussion() {
           </Discussion>
         </TouchableOpacity>
       ))}
-      {/*<Discussion*/}
-      {/*    styles={style.discussionStyle}*/}
-      {/*    onPress={handleOpenMessageEchange}*/}
-      {/*>*/}
-      {/*    <Text style={style.csspp}>*/}
-      {/*        <MessagesSquare color="#A3298B" size={hp(4)}/>*/}
-      {/*    </Text>*/}
-      {/*    <View>*/}
-      {/*        <Text style={{fontSize: 20}}>Username</Text>*/}
-      {/*        <Text>Last Message</Text>*/}
-      {/*    </View>*/}
-      {/*</Discussion>*/}
-      {/*<Discussion*/}
-      {/*    styles={style.discussionStyle}*/}
-      {/*    onPress={handleOpenMessageEchange}*/}
-      {/*>*/}
-      {/*    <Text style={style.csspp}>*/}
-      {/*        <MessagesSquare color="#A3298B" size={hp(4)}/>*/}
-      {/*    </Text>*/}
-      {/*    <View>*/}
-      {/*        <Text style={{fontSize: 20}}>Username</Text>*/}
-      {/*        <Text>Last Message</Text>*/}
-      {/*    </View>*/}
-      {/*</Discussion>*/}
     </Main>
   );
 }
 
 const style = StyleSheet.create({
   disposition: {
+    paddingTop: 30,
     flexDirection: 'column',
     backgroundColor: 'white',
   },
@@ -149,19 +126,22 @@ const style = StyleSheet.create({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    gap: 5,
   },
   imageContainer: {
     width: 50,
     height: 50,
   },
   discussionStyle: {
-    minWidth: '100%',
-    margin: 2,
+    borderRadius: 5,
+    minWidth: '80%',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginTop: 10,
+    marginBottom: 0,
     backgroundColor: COLORS.darkLavender,
     display: 'flex',
     flexDirection: 'row',
-    gap: 10,
+    gap: 25,
     padding: 10,
   },
 });

@@ -152,7 +152,7 @@ export default function Login() {
         )}
 
         <Text style={style.buttonLogin} onPress={handleSubmit}>
-          {isLoading ? 'Register ...' : 'Se connecter'}
+          {isLoading ? 'Se connecter ...' : 'Se connecter'}
         </Text>
         <View style={{display: 'flex', flexDirection: 'row', gap: wp(40)}}>
           <Text
