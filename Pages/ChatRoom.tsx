@@ -1,3 +1,6 @@
+/* eslint-disable quotes */
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable prettier/prettier */
 import {StyleSheet, TextInput, View, Text, ScrollView} from "react-native";
 import Main from "../Component/Main";
 import {useConfig} from "../Hook/useConfig";
@@ -33,7 +36,7 @@ export default function ChatRoom() {
             'Content-Type': 'application/x-www-form-urlencoded',
             Authorization: `Bearer ${token}`,
           },
-          credentials: 'same-origin'
+          credentials: 'same-origin',
         });
 
         if (response.ok) {
@@ -110,12 +113,12 @@ const style = StyleSheet.create({
     backgroundColor: "#161C3D",
     width: wp(100),
     height: hp(100),
-    padding: 10
+    padding: 10,
   },
     separator: {
         height: 10,
         width: "100%",
-        backgroundColor: "#161C3D",
+    backgroundColor: '#161C3D',
         opacity: 0.8,
     },
   composantInput: {
@@ -134,7 +137,7 @@ const style = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     backgroundColor: "white",
-    justifyContent: "flex-start"
+    justifyContent: "flex-start",
   },
   inputProp: {
     width: wp(80),
@@ -142,7 +145,7 @@ const style = StyleSheet.create({
     backgroundColor: "#dcdcdc",
     borderRadius: 10,
     fontSize: hp(2),
-    padding: 10
+    padding: 10,
   },
   buttonEnvoyer: {
     backgroundColor: "#A3298B",
@@ -156,7 +159,7 @@ const style = StyleSheet.create({
     textAlign: "center",
     textAlignVertical: "center",
     fontSize: hp(2.5),
-    color: "#fff"
+    color: "#fff",
   },
 
   messageLeft: {
@@ -176,5 +179,5 @@ const style = StyleSheet.create({
     fontSize: hp(2.5),
     borderRadius: 15,
     alignSelf: "flex-end", // Alignez le message à droite
-  }
+  },
 });
