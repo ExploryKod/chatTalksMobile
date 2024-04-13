@@ -17,7 +17,7 @@ import {SendHorizontal} from 'lucide-react-native';
 
 const MessageEchange: React.FC = ({navigation, route}: any) => {
   const {roomId} = route.params || {};
-  const {serverUrl} = useConfig();
+  const {wsUrl, serverUrl} = useConfig();
   const {token, username} = useLoggedStore();
   // const socketUrl = `wss://go-chat-docker.onrender.com/ws?name=nass`;
   const [ws, setWs] = useState<WebSocket | null>(null);
@@ -81,9 +81,10 @@ const MessageEchange: React.FC = ({navigation, route}: any) => {
   useEffect(() => {
     console.log('usernameNASS', username);
     // const newWs = new WebSocket('ws://10.0.2.2:9090/ws');
-    const newWs = new WebSocket(
-      `ws://10.0.2.2:8000/ws?name=${username}&roomId=${roomId ? roomId : '0'}`,
-    );
+
+      const newWs = new WebSocket(
+          `${wsUrl}?name=${username}&roomId=${roomId ? roomId : '0'}`,
+      );
     // const newWs = new WebSocket(`wss://go-chat-docker.onrender.com/ws?name=nass`);
 
     newWs.onopen = () => {

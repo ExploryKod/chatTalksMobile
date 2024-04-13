@@ -1,6 +1,5 @@
 import React from 'react';
 import Register from './Auth/Register.tsx';
-import Discussion from './Pages/Discussion.tsx';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Login from './Auth/Login.tsx';
