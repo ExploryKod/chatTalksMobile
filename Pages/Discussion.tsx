@@ -78,7 +78,7 @@ export default function ListDiscussion() {
     try {
       // @ts-ignore
       navigationMessageEchange.navigate('Salle', {
-        roomId: dataRoom.id.toString(),
+        roomId: dataRoom.room.id.toString(),
         roomName: dataRoom.room.name,
         roomDescription: dataRoom.room.description,
       });

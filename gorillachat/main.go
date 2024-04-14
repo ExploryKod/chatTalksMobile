@@ -29,14 +29,14 @@ func main() {
 
 	//psql 'postgresql://ExploryKod:0PqEazdVC2RJ@ep-square-block-44724621-pooler.eu-central-1.aws.neon.tech/chatdb?sslmode=require'
 
-	// 	conf := mysql.Config{
-	// 		User:                 "u6ncknqjamhqpa3d",
-	// 		Passwd:               "O1Bo5YwBLl31ua5agKoq",
-	// 		Net:                  "tcp",
-	// 		Addr:                 "bnouoawh6epgx2ipx4hl-mysql.services.clever-cloud.com:3306",
-	// 		DBName:               "bnouoawh6epgx2ipx4hl",
-	// 		AllowNativePasswords: true,
-	// 	}
+	conf := mysql.Config{
+		User:                 "root",
+		Passwd:               "password",
+		Net:                  "tcp",
+		Addr:                 "172.19.0.3:3306",
+		DBName:               "chatbdd",
+		AllowNativePasswords: true,
+	}
 
 	// conf := mysql.Config{
 	// 	User:                 "root",
@@ -47,14 +47,14 @@ func main() {
 	// 	AllowNativePasswords: true,
 	// }
 
-	conf := mysql.Config{
-		User:                 os.Getenv("MYSQL_ADDON_USER"),
-		Passwd:               os.Getenv("MYSQL_ADDON_PASSWORD"),
-		Net:                  "tcp",
-		Addr:                 os.Getenv("MYSQL_ADDON_HOST"),
-		DBName:               os.Getenv("MYSQL_ADDON_DB"),
-		AllowNativePasswords: true,
-	}
+	//conf := mysql.Config{
+	//	User:                 os.Getenv("MYSQL_ADDON_USER"),
+	//	Passwd:               os.Getenv("MYSQL_ADDON_PASSWORD"),
+	//	Net:                  "tcp",
+	//	Addr:                 os.Getenv("MYSQL_ADDON_HOST"),
+	//	DBName:               os.Getenv("MYSQL_ADDON_DB"),
+	//	AllowNativePasswords: true,
+	//}
 
 	db, err := sql.Open("mysql", conf.FormatDSN())
 	if err != nil {
