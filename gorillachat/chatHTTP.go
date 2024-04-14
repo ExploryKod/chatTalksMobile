@@ -23,6 +23,7 @@ type MessageItem struct {
 	UserID    int    `json:"user_id"`
 	RoomID    int    `json:"room_id"`
 	CreatedAt string `json:"created_at"`
+	Action    string `json:"action"`
 }
 
 type DiscussionItem struct {

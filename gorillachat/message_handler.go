@@ -1,23 +1,27 @@
 package main
 
 import (
+	"fmt"
 	"github.com/go-chi/chi/v5"
+	"log"
 	"net/http"
 	"strconv"
 )
 
 func (h *Handler) CreateMessageHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("je rentre")
 	username := r.FormValue("username")
 	content := r.FormValue("content")
 
 	sender, _ := h.Store.GetUserByUsername(username)
-
 	roomID := r.FormValue("roomID")
 	roomIDInt, _ := strconv.Atoi(roomID)
 
+	fmt.Println(sender.Username, content, roomID, "sender, content, roomID")
 	if sender.Username != "" && content != "" && roomID != "" {
 		messageID, err := h.Store.AddMessage(MessageItem{Content: content, UserID: sender.ID, RoomID: roomIDInt, Username: sender.Username})
 		if err != nil {
+			log.Println(err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
