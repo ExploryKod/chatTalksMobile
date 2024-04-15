@@ -1,4 +1,4 @@
-import {IRoom, IUser} from './chat';
+import {IRoom, ISavedMessage, IUser} from './chat';
 
 export interface IDiscussion {
   id: number;
@@ -7,4 +7,5 @@ export interface IDiscussion {
   room_id: number;
   user: IUser;
   user_id: number;
+  last_message: ISavedMessage
 }

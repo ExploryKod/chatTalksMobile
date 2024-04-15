@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/jwtauth/v5"
 	"net/http"
@@ -9,6 +10,7 @@ import (
 
 func (h *Handler) JoinRoomHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("JoinRoomHandler")
 		roomID := chi.URLParam(r, "id")
 		var id, err = strconv.Atoi(roomID)
 		if err != nil {

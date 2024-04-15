@@ -39,6 +39,31 @@ const MessageEchange: React.FC = ({navigation, route}: any) => {
   const [action, setAction] = useState<string>('');
   const scrollViewRef = useRef<ScrollView>(null);
 
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        const response = await fetch(`${serverUrl}/chat/messages/${roomId}`,{
+          method: 'GET',
+          mode: 'cors',
+          credentials: 'same-origin',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }});
+        if (!response.ok) {
+          throw new Error('Failed to fetch messages');
+        }
+        const data = await response.json();
+        console.log("MESSAGE TEST NASS",data.messages)
+        setMessages(data.messages);
+      } catch (error) {
+        console.error('Error fetching messages:', error);
+      }
+    };
+
+    fetchMessages();
+  }, [roomId, serverUrl]);
+
   const handleJoinRoom = () => {
     if (!ws) {
       return;
@@ -99,11 +124,11 @@ const MessageEchange: React.FC = ({navigation, route}: any) => {
       data = data.split(/\r?\n/);
 
       data.forEach((element: string) => {
-        console.log('WebSocket element:', element);
+        // console.log('WebSocket element:', element);
         let msg = JSON.parse(element);
-        console.log('WebSocket msg:', msg.message);
-        console.log('WebSocket action:', msg.action);
-        console.log('Websocker SENDER', msg?.sender?.roomId);
+        // console.log('WebSocket msg:', msg.message);
+        // console.log('WebSocket action:', msg.action);
+        // console.log('Websocker SENDER', msg?.sender?.roomId);
 
         if (
           msg.action &&
@@ -133,8 +158,10 @@ const MessageEchange: React.FC = ({navigation, route}: any) => {
             sendermessage: msg?.message,
             action: msg?.action,
             id: '989996dd-f092-479e-a1b6-192c0a7d19f1',
-            content: sendermessage ? sendermessage : null,
-            username: sendername ? sendername : null,
+            // content: sendermessage ? sendermessage : null,
+            content:  msg?.message,
+            // username: sendername ? sendername : null,
+            username: msg?.sender?.name,
             room_id: msg?.sender?.roomId ? roomId : null,
             user_id: null,
             created_at: null,
@@ -166,9 +193,36 @@ const MessageEchange: React.FC = ({navigation, route}: any) => {
       Toast.show({type: 'error', text1: 'Veuillez écrire un message'});
       return;
     }
-    console.log('messageInput.message');
     ws.send(JSON.stringify(messageInput));
-    console.log('messageInput', messageInput);
+
+    // send message to the server post request on /send-message route
+    fetch(`${serverUrl}/send-message`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: `Bearer ${token}`,
+      },
+      body: new URLSearchParams({
+        content: messageInput.message,
+        roomID: roomId,
+        username: username,
+      }).toString(),
+    })
+      .then(response => {
+        console.log("INFO IMPORTANT", roomId, messageInput.message, username)
+        if (response.ok) {
+          return response.json();
+        } else {
+          console.error('Failed to send message');
+        }
+      })
+      .then(data => {
+        console.log('data sned Message', data);
+      })
+      .catch(error => {
+        console.error('Error sending message:', error);
+      });
+
     if (scrollViewRef.current) {
       scrollViewRef.current.scrollToEnd({animated: true});
     }
@@ -223,40 +277,40 @@ const MessageEchange: React.FC = ({navigation, route}: any) => {
       }
     }
   };
-
+  console.log('messages', messages);
   return (
     <View style={style.messageContainer}>
       <ScrollView
         ref={scrollViewRef as React.RefObject<ScrollView>}
         onContentSizeChange={() => scrollViewRef.current?.scrollToEnd()}>
-        {messages
-          .filter(message => message.action === 'send-message')
+        {messages && messages
+          .filter(message => message?.action === 'send-message')
           .map((message, index) => (
             <View
               key={index}
               style={
-                message.sendername === username
+                message.username === username
                   ? style.bubbleUser
                   : style.bubbleOther
               }>
               <View style={style.bubbleUsername}>
                 <Text
                   style={
-                    message.sendername !== username
+                    message.username !== username
                       ? {color: COLORS.darkBlue}
                       : {color: COLORS.darkpink}
                   }>
-                  {message.sendername}
+                  {message.username}
                 </Text>
               </View>
               <View
                 style={
-                  message.sendername !== username
+                  message.username !== username
                     ? style.bubbleMessageUser
                     : style.bubbleMessageOther
                 }>
                 <Text style={{color: COLORS.lightLavender}}>
-                  {message.sendermessage}
+                  {message.content}
                 </Text>
               </View>
             </View>
