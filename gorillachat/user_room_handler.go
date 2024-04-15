@@ -24,3 +24,24 @@ func (h *Handler) GetUserDiscussions() http.HandlerFunc {
 		h.jsonResponse(w, http.StatusOK, discussions)
 	}
 }
+
+func (h *Handler) DeleteUserRoomHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		QueryUserId := chi.URLParam(r, "userid")
+		userid, _ := strconv.Atoi(QueryUserId)
+		QueryRoomId := chi.URLParam(r, "roomid")
+		roomid, _ := strconv.Atoi(QueryRoomId)
+
+		err := h.Store.DeleteUserRoom(userid, roomid)
+		if err != nil {
+			log.Fatal(err)
+			h.jsonResponse(w, http.StatusInternalServerError, map[string]interface{}{
+				"message": "Internal Server Error",
+			})
+			return
+		}
+		h.jsonResponse(w, http.StatusOK, map[string]interface{}{
+			"message": "User room deleted",
+		})
+	}
+}

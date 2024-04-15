@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"log"
 )
 
@@ -21,8 +22,31 @@ func (t *UserStore) GetUserDiscussions(id int) ([]DiscussionItem, error) {
 			log.Println("ERREUR OCCURRED:", err)
 			return nil, err
 		}
+
+		err = t.QueryRow("SELECT content, created_at FROM messages WHERE room_id = ? ORDER BY created_at DESC LIMIT 1", discussion.RoomID).Scan(&discussion.LastMessage.Content, &discussion.LastMessage.CreatedAt)
+		if err != nil && err != sql.ErrNoRows {
+			log.Println("ERROR OCCURRED:", err)
+			return nil, err
+		}
+
 		discussions = append(discussions, discussion)
 	}
 
 	return discussions, nil
+}
+
+func (t *UserStore) AddUserToRoom(roomID int, userID int) error {
+	_, err := t.DB.Exec("INSERT INTO User_Room (user_id, room_id) VALUES (?, ?)", userID, roomID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (t *UserStore) DeleteUserRoom(userid int, roomid int) error {
+	_, err := t.DB.Exec("DELETE FROM User_Room WHERE user_id = ? AND room_id = ?", userid, roomid)
+	if err != nil {
+		return err
+	}
+	return nil
 }

@@ -33,7 +33,7 @@ func main() {
 		User:                 "root",
 		Passwd:               "password",
 		Net:                  "tcp",
-		Addr:                 "172.19.0.3:3306",
+		Addr:                 "172.19.0.2:3306",
 		DBName:               "chatbdd",
 		AllowNativePasswords: true,
 	}
@@ -113,6 +113,7 @@ func main() {
 		r.Get("/chat/messages/{id}", handler.GetMessageHandler)
 		r.Get("/messages/room/delete-history/{id}", handler.DeleteMessageFromRoomHandler())
 		r.Get("/user/discussions/{id}", handler.GetUserDiscussions())
+		r.Delete("/user/discussion/delete/{userid}/{roomid}", handler.DeleteUserRoomHandler())
 	})
 
 	handler.Get("/ws", func(w http.ResponseWriter, r *http.Request) {
