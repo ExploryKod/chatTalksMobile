@@ -151,22 +151,25 @@ const MessageEchange: React.FC = ({navigation, route}: any) => {
           onMessageAction(msg?.action, msg?.sender?.name);
         }
 
-        setMessages(prevMessages => [
-          ...prevMessages,
-          {
+        setMessages(prevMessages => {
+          const newMessage = {
             sendername: msg?.sender?.name,
             sendermessage: msg?.message,
             action: msg?.action,
             id: '989996dd-f092-479e-a1b6-192c0a7d19f1',
-            // content: sendermessage ? sendermessage : null,
-            content:  msg?.message,
-            // username: sendername ? sendername : null,
+            content: msg?.message,
             username: msg?.sender?.name,
             room_id: msg?.sender?.roomId ? roomId : null,
             user_id: null,
             created_at: null,
-          },
-        ]);
+          };
+
+          if (!prevMessages || prevMessages.length === 0) {
+            return [newMessage];
+          }
+
+          return [...prevMessages, newMessage];
+        });
       });
     };
 

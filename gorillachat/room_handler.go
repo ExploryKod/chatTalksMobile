@@ -49,8 +49,9 @@ func (h *Handler) JoinRoomHandler() http.HandlerFunc {
 			if err != nil {
 				return
 			}
-			h.jsonResponse(w, http.StatusOK, map[string]interface{}{"message": "joined this room " + room.Name})
+			h.jsonResponse(w, http.StatusOK, map[string]interface{}{"roomName": room.Name})
 		} else {
+			fmt.Println("CLAIM", ok, username)
 			h.jsonResponse(w, http.StatusUnauthorized, map[string]interface{}{"error": "Unauthorized"})
 		}
 	}
