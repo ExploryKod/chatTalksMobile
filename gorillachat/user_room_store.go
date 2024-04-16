@@ -23,7 +23,7 @@ func (t *UserStore) GetUserDiscussions(id int) ([]DiscussionItem, error) {
 			return nil, err
 		}
 
-		err = t.QueryRow("SELECT content, created_at FROM messages WHERE room_id = ? ORDER BY created_at DESC LIMIT 1", discussion.RoomID).Scan(&discussion.LastMessage.Content, &discussion.LastMessage.CreatedAt)
+		err = t.QueryRow("SELECT messages.content, messages.created_at, Users.username FROM messages JOIN Users ON messages.user_id = Users.id WHERE room_id = ? ORDER BY created_at DESC LIMIT 1", discussion.RoomID).Scan(&discussion.LastMessage.Content, &discussion.LastMessage.CreatedAt, &discussion.LastMessage.Username)
 		if err != nil && err != sql.ErrNoRows {
 			log.Println("ERROR OCCURRED:", err)
 			return nil, err

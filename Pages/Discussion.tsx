@@ -125,12 +125,16 @@ export default function ListDiscussion() {
                         <View>
                             {/* eslint-disable-next-line react-native/no-inline-styles */}
                             <Text style={{fontSize: 20}}>{discussion.room.name}</Text>
-                            <Text>{discussion.last_message.content}</Text>
+                            <Text style={{fontWeight: 'bold'}}>{discussion.last_message.username ? discussion.last_message.username + ": " : "" }
+                                <Text style={{fontWeight: 'normal'}}>
+                                    {discussion.last_message.content ? discussion.last_message.content : "Envoyez un message en premier !"}
+                                </Text>
+                            </Text>
                         </View>
                         <TouchableOpacity
                             style={style.deleteButton}
                             onPress={() => handleDeleteDiscussion(discussion.room.id)}>
-                            <Text style={{ color: 'red' }}>X</Text>
+                            <Text style={{ color: 'purple' }}>X</Text>
                         </TouchableOpacity>
                     </Discussion>
                 </TouchableOpacity>
